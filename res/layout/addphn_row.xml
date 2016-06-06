@@ -1,0 +1,61 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal"
+android:padding="4dip"
+android:descendantFocusability="blocksDescendants"
+>
+
+<ImageView
+    android:id="@+id/addphnrow_img"
+    android:layout_width="45dip"
+    android:layout_height="45dip"
+    android:layout_gravity="center_vertical"
+    android:layout_marginRight="4dip"
+    android:scaleType="fitXY"
+    android:adjustViewBounds="true" />
+
+<LinearLayout
+android:layout_width="0dp"
+android:layout_height="wrap_content"
+android:padding="4dip"
+android:layout_weight="1"
+android:orientation="vertical"
+>
+
+
+    <TextView
+        android:id="@+id/addphnrow_contact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:ellipsize="end"
+        android:textSize="16sp"
+        />
+
+<TextView
+    android:id="@+id/addphnrow_user"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="3dp"
+    android:layout_weight="1"
+    android:ellipsize="end"
+    android:singleLine="true"
+    android:textSize="14sp"
+    android:textStyle="italic"
+    android:textColorLink="#2f6699"
+    />
+
+
+</LinearLayout>
+
+<CheckBox 
+    android:id="@+id/addphnrow_chk"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:onClick="Select_Phone_Contact" 
+    android:checked="false"   
+    />
+
+</LinearLayout>

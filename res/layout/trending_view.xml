@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:orientation="vertical"
+     >
+    
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:orientation="horizontal"
+    android:gravity="left"
+    android:background="#eeedf3" >
+ 
+    <TextView
+        android:id="@+id/maincrow_trending_txt"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="2dp"
+        android:layout_gravity="left"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="Trending hashtags"
+        android:textColor="#5a5a60"
+        android:textSize="14.5sp"
+        android:textStyle="bold|italic" />
+    
+    
+    </LinearLayout> 
+
+   
+    
+    <ListView android:id="@+id/trendHash_list"
+     android:layout_width="match_parent"
+     android:layout_height="125dp"
+     android:background="@drawable/round_corners"
+     />
+    
+   
+
+<RelativeLayout 
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:background="#cceeedf3" 
+    >
+  
+    
+    
+        
+    <ProgressBar
+        android:id="@+id/maincrow_loading"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:indeterminate="true"
+        android:indeterminateDrawable="@drawable/costum_progress_bar"
+        android:layout_marginLeft="0dip"
+        android:layout_marginRight="0dip"
+        android:layout_marginTop="4dp"
+        android:visibility="gone" 
+        android:layout_centerVertical="true"
+         />
+    
+   
+    
+ 
+       
+</RelativeLayout>
+        
+    
+   
+    
+
+<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="26dp"
+        android:background="#cceeedf3"
+        
+        >
+    <!-- android:background="@drawable/fadepostbg" -->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_marginLeft="0dip"
+            android:layout_marginRight="0dip"
+            android:layout_alignParentTop="true"
+            android:background="?android:attr/dividerVertical" />
+        
+   
+        <Button
+            android:id="@+id/maincrow_load_more"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="View more..."
+            android:textColor="#5a5a60"
+            android:textSize="14.5sp"
+            android:textStyle="bold|italic" />
+
+     
+         <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_marginLeft="0dip"
+            android:layout_marginRight="0dip"
+            android:layout_alignParentBottom="true"
+            android:background="?android:attr/dividerVertical" />
+     
+    </RelativeLayout> 
+    
+
+
+  
+</LinearLayout>

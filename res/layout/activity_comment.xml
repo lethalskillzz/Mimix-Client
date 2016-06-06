@@ -1,0 +1,97 @@
+   <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="280dp"
+    android:layout_height="fill_parent"
+     
+    android:orientation="vertical"
+    >
+
+       
+        
+   <ListView
+    android:id="@+id/listview_comments"
+    android:layout_width="fill_parent"
+    android:layout_height="130dp"
+    android:layout_gravity="center_horizontal"
+    android:layout_margin="4dp"
+    android:background="#b3ffffff"
+    android:dividerHeight="0.5dp" 
+/>
+
+   <View style="@style/Divider"/>
+   
+     <LinearLayout 
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="#48eeedf3"
+    android:orientation="horizontal" 
+   >       
+   
+      
+           <EditText
+               android:id="@+id/comment_edttxt"
+               android:layout_width="180dp"
+               android:layout_height="wrap_content"
+               android:layout_weight="1"
+               android:layout_margin="5dp"
+               android:layout_marginTop="5dp"
+               android:minHeight="36dp"
+               android:background="@drawable/custom_edt"
+               android:hint="Comment..."
+               android:maxLength="140"
+                />
+ 
+     <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        
+     <!--     <TextView
+             android:id="@+id/comment_count"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:ellipsize="end"
+             android:gravity="center_vertical"
+             android:singleLine="true"
+             android:text="0/140"
+             android:textColor="#000000"
+             android:textSize="12sp" />  -->
+    
+    <ProgressBar
+        android:id="@+id/comment_progressBar"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:indeterminate="true"
+        android:minHeight="50dp"
+        android:minWidth="50dp"
+        android:progress="2" 
+        android:indeterminateDrawable="@drawable/costum_progress_bar"
+        android:padding="3dp"
+        android:visibility="gone" 
+    />
+        
+          <Button
+              android:id="@+id/comment_btn"
+              android:layout_width="60dp"
+              android:layout_height="36dp"
+              android:layout_marginRight="6dp"
+              android:layout_marginTop="5dp"
+              android:background="@drawable/post_btn"
+              android:onClick="Clck_post"
+              android:padding="3dp"
+              android:text="Post"
+              android:textColor="#ffffff"
+              android:textSize="13sp" />
+    
+   </LinearLayout>      
+
+    
+    
+
+    
+</LinearLayout>
+
+                
+                
+</LinearLayout>

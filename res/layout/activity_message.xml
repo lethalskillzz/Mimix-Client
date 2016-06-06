@@ -1,0 +1,178 @@
+ <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:background="@drawable/metro"
+android:gravity="center_horizontal">
+
+     
+   <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fadehomebg"
+    android:orientation="vertical"
+     >
+             
+
+   <LinearLayout 
+    android:id="@+id/msg_action_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="0dp"
+    android:background="@drawable/fadeactionbarbg" >
+    
+    
+    <LinearLayout 
+       android:layout_width="0dp"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal"
+       android:clickable="true" 
+       android:background="?android:attr/selectableItemBackground"  
+       android:onClick="GoProf"    
+       android:layout_gravity="left"
+       android:paddingBottom="5dp"
+       android:paddingTop="5dp"
+       android:layout_weight="1"
+        >
+  
+    <ImageView
+    android:id="@+id/msg_action_bar_image"
+    android:layout_width="40dp"
+    android:layout_height="30dp"
+    android:layout_gravity="left"
+    android:paddingRight="8dip"
+    android:paddingLeft="4dip"
+    android:scaleType="fitXY" />
+
+    
+    <TextView
+    android:id="@+id/msg_action_bar_username"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:ellipsize="end"
+    android:singleLine="true"
+    android:textStyle="bold"
+    android:textColor="#ffffff"
+    android:textSize="16sp" />
+    
+    
+    </LinearLayout>  
+    
+    
+     <LinearLayout 
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal" 
+       android:padding="7dp"
+       android:layout_gravity="right"  
+        >
+ 
+    
+            <ProgressBar
+            android:id="@+id/msg_action_bar_loading"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_margin="1dp"
+            android:indeterminate="true"
+            android:indeterminateDrawable="@drawable/costum_progress_bar"
+            android:padding="3dp"
+            android:visibility="gone" />
+    
+    </LinearLayout>
+    
+   </LinearLayout>  
+  
+       
+              
+    <ListView
+        android:id="@+id/msglistView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:stackFromBottom="true"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:transcriptMode="alwaysScroll" 
+        >
+    </ListView>
+    
+  
+    
+    
+    <LinearLayout
+        android:id="@+id/form"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:orientation="horizontal"
+         android:background="#cceeedf3"
+        > 
+        
+              
+        
+      <ImageButton
+       android:id="@+id/emojibtn"
+       android:layout_width="15dp"
+       android:layout_height="30dp"
+       android:layout_gravity="right|center_vertical"
+       android:layout_weight="0.05"
+       android:background="?android:attr/selectableItemBackground"
+       android:gravity="right"
+       android:onClick="Show_Emoji"
+       android:src="@drawable/ic_emoji" />
+              
+      <ImageButton
+       android:id="@+id/hideemojibtn"
+       android:layout_width="15dp"
+       android:layout_height="30dp"
+       android:layout_gravity="right|center_vertical"
+       android:layout_weight="0.05"
+       android:background="?android:attr/selectableItemBackground"
+       android:gravity="right"
+       android:onClick="Hide_Emoji"
+       android:src="@drawable/ic_hideemoji"
+       android:visibility="gone" />
+              
+      
+        
+        
+        <com.rockerhieu.emojicon.EmojiconEditText
+            android:id="@+id/msgeditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.45"
+            android:ems="10"
+            android:inputType="text|textMultiLine"
+            android:singleLine="false" />
+        
+   
+        
+   <ImageButton
+       android:id="@+id/msgsendbtn"
+       android:layout_width="15dp"
+       android:layout_height="30dp"
+       android:layout_gravity="right|center_vertical"
+       android:layout_weight="0.05"
+       android:background="?android:attr/selectableItemBackground"
+       android:gravity="right"
+       android:onClick="Send_IMessage"
+       android:src="@drawable/ic_msgsendbtn" />
+
+    </LinearLayout>
+    
+        <FrameLayout
+            android:id="@+id/emojicons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+    
+    
+    </LinearLayout>
+    
+
+
+ </LinearLayout>

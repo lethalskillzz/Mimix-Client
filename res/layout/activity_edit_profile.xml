@@ -1,0 +1,238 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="270dp"
+android:layout_height="430dp"
+android:gravity="center_horizontal"
+>
+ 
+  <LinearLayout
+    style="@style/LoginFormContainer"
+    android:orientation="vertical" 
+    android:background="#cceeedf3" 
+    android:padding="4dp" >
+    
+      
+  <LinearLayout
+    style="@style/LoginFormContainer"
+    android:orientation="vertical" 
+    android:background="@drawable/round_ash_corners" 
+    android:padding="4dp" >
+    
+    
+<LinearLayout
+android:orientation="horizontal"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+ android:clickable="true"
+ android:onClick=""
+android:background="?android:attr/selectableItemBackground"  
+ >                  
+        
+    <ImageView
+    android:id="@+id/msg_action_bar_image"
+    android:layout_width="60dp"
+    android:layout_height="60dp"
+    android:layout_gravity="left"
+    android:paddingRight="8dip"
+    android:paddingLeft="4dip"
+    android:scaleType="fitXY"
+    android:src="@drawable/me" />
+
+    
+    <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:ellipsize="end"
+    android:singleLine="true"
+    android:text="Edit"
+    android:textStyle="bold"
+    android:textColor="#5a5a60"
+     />
+ 
+</LinearLayout>
+
+</LinearLayout>
+
+  
+    <LinearLayout
+    style="@style/LoginFormContainer"
+    android:orientation="vertical" 
+    android:layout_marginTop="10dp"
+    android:background="@drawable/round_ash_corners" 
+    android:padding="4dp" >
+    
+
+ <EditText
+     android:id="@+id/editProf_phone"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:ems="10"
+     android:hint="Phone"
+     android:inputType="phone"
+     android:lines="1"
+     android:maxLength="13"
+     android:maxLines="1"  >
+
+</EditText>
+
+ </LinearLayout>
+ 
+ 
+    <LinearLayout
+    style="@style/LoginFormContainer"
+    android:orientation="vertical" 
+    android:layout_marginTop="10dp"
+    android:background="@drawable/round_ash_corners" 
+    android:padding="4dp" >
+    
+    
+    
+<EditText
+    android:id="@+id/editProf_Email"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:ems="10"
+    android:hint="Email"
+    android:inputType="textWebEmailAddress"
+    android:lines="1"
+    android:maxLength="150" 
+    android:maxLines="1" >
+
+</EditText>
+
+ </LinearLayout>
+ 
+ 
+  <LinearLayout
+    style="@style/LoginFormContainer"
+    android:orientation="vertical" 
+    android:layout_marginTop="10dp"
+    android:background="@drawable/round_ash_corners" 
+    android:padding="4dp" >
+    
+    
+    
+<EditText
+    android:id="@+id/editProf_occupation"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:ems="10"
+    android:hint="Occupation"
+    android:inputType="textNoSuggestions"
+    android:lines="1"
+    android:maxLines="1" >
+</EditText>
+
+ </LinearLayout>
+
+
+    <LinearLayout
+    style="@style/LoginFormContainer"
+    android:orientation="vertical" 
+    android:layout_marginTop="10dp"
+    android:background="@drawable/round_ash_corners" 
+    android:padding="4dp" >
+    
+  
+<EditText
+    android:id="@+id/editProf_workplace"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:ems="10"
+    android:hint="Place of work"
+    android:inputType="textNoSuggestions"
+    android:lines="1"
+    android:maxLines="1" >
+</EditText>
+
+ </LinearLayout>
+
+
+    
+  <LinearLayout
+    style="@style/LoginFormContainer"
+    android:orientation="vertical" 
+     android:layout_marginTop="10dp"
+    android:background="@drawable/round_ash_corners" 
+    android:padding="4dp" >
+    
+
+ <Spinner
+     android:id="@+id/editProf_Location"
+     android:layout_width="fill_parent"
+     android:layout_height="wrap_content"
+     android:entries="@array/Location_array"
+     />
+ 
+  </LinearLayout>
+ 
+
+    <LinearLayout
+    style="@style/LoginFormContainer"
+    android:orientation="vertical" 
+    android:layout_marginTop="10dp"
+    android:background="@drawable/round_ash_corners" 
+    android:padding="4dp" >
+   
+  
+  
+<EditText
+    android:id="@+id/editProf_Password"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:ems="10"
+    android:hint="Password"
+    android:inputType="textPassword"
+    android:lines="1"
+    android:maxLength="12"
+    android:maxLines="1"  >
+
+</EditText>
+
+  </LinearLayout>
+ 
+    
+  <LinearLayout
+    style="@style/LoginFormContainer"
+    android:orientation="vertical" 
+    android:layout_marginTop="10dp"
+    android:background="@drawable/round_ash_corners" 
+    android:padding="4dp" >
+   
+
+<EditText
+    android:id="@+id/editProf_Comfirm"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:ems="10"
+    android:hint="Comfirm Password"
+    android:inputType="textPassword"
+    android:lines="1"
+    android:maxLength="12"
+    android:maxLines="1"  >
+
+</EditText>
+
+  </LinearLayout>
+ 
+
+
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/post_btn"
+                android:onClick="startReg"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:text="Done"
+                android:textColor="#ffffff"
+                android:textSize="15sp" />  
+                
+            
+            </LinearLayout> 
+
+    </ScrollView>  

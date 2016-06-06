@@ -1,0 +1,55 @@
+    
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="4dp"
+    android:background="@drawable/fadebg">
+
+    <!-- <LinearLayout
+    android:id="@+id/add_phn_loader"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+     android:background="#eeedf3"
+    android:orientation="horizontal" >
+ 
+    <TextView
+    android:id="@+id/add_phn_loading_txt"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:ellipsize="end"
+    android:singleLine="true"
+    android:text="Loading"
+    android:textStyle="italic"
+    android:textColor="#a9a5a5"
+    android:layout_gravity="center" />
+    
+    
+      <ProgressBar
+      android:id="@+id/add_phn_loading"
+      style="?android:attr/progressBarStyleSmall"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:indeterminate="true"
+      android:layout_margin="1dp"
+      android:layout_gravity="center"
+      />
+   
+</LinearLayout> -->
+        
+        
+    <ListView
+        android:id="@+id/add_phn_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:background="#eeedf3"
+        android:divider="#8b8bee"
+         />
+    
+    
+ 
+    
+</LinearLayout> 

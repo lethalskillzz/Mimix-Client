@@ -1,0 +1,634 @@
+package com.lethalsys.mimix;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Base64;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class ProfileActivity extends Activity {
+
+	public final static String F_MSG = "com.lethalsys.mimix.FMESSAGE";
+	public final static String F_USR = "com.lethalsys.mimix.FUSER";
+	public final static String T_DETAIL = "com.lethalsys.mimix.TARGETDETAIL";
+	public final static String PPUsrNAME="";
+
+	private ImageView prof_image=null;
+	//private ImageView prof_option=null;
+	//private ImageView prof_follow=null;
+	//private ImageView prof_msg=null;
+	private ImageButton prof_msg=null;
+	private TextView prof_name=null;
+	private TextView prof_mail=null;
+	private Button followers=null;
+	private Button following=null;
+	String iresponse;
+	String UsrNAME=null;
+	String IUsrNAME=null;
+	String IUsrNAME2=null;
+
+	private ProgressDialog pDialog;
+
+	String profimg;
+	static byte[] pimgdata=null;
+    byte[] postimg = null;
+	//static byte[] spimgdata = null;
+
+	/*private String[] Data0;
+	private String[] Data1;
+	private String[] Data2;
+	private String[] Data3;*/
+	private String UserID;
+	String usrnamE;
+	String emailE;
+
+	private String numfollowers;
+	private String numfollowing;
+
+	List<engine> model=new ArrayList<engine>();
+	ProfileAdapter adapter=null;
+
+	JSONArray data = null;
+	JSONArray data2 = null;
+
+	public static ConnectivityManager mConnectivityManager;
+	public static NetworkInfo mNetworkInfo;
+
+	UseID_Database uidhelper;
+	
+	Boolean ErrorDlg = true;
+	 
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_profile);
+
+		uidhelper=new UseID_Database(this);
+		UserID = uidhelper.getID();	 
+
+
+		Intent intent2 = getIntent();
+		IUsrNAME = intent2.getStringExtra(MyContactsActivity.MYUSR_DETAIL);
+
+		if(IUsrNAME!=null)
+		{
+			UsrNAME = IUsrNAME;
+			//Toast.makeText(getApplicationContext(),UsrNAME2 , Toast.LENGTH_LONG).show();
+		}
+
+
+		Intent intent = getIntent();
+		IUsrNAME2 = intent.getStringExtra(ContactsActivity.USR_DETAIL);
+
+		if(IUsrNAME2!=null)
+		{
+			UsrNAME = IUsrNAME2;
+			//Toast.makeText(getApplicationContext(),UsrNAME2 , Toast.LENGTH_LONG).show();
+		}
+		
+		setTitle(UsrNAME);
+
+
+		prof_image=(ImageView)findViewById(R.id.profile_image);	
+		prof_image.setImageResource(R.drawable.ic_mee);
+
+		prof_msg=(ImageButton)findViewById(R.id.profile_msg);
+		//prof_msg=(ImageView)findViewById(R.id.profile_msg);	
+		prof_msg.setImageResource(R.drawable.ic_msg);
+
+		//prof_option=(ImageView)findViewById(R.id.profile_option);	
+		//prof_option.setImageResource(R.drawable.ic_profile_option);
+
+		//prof_follow=(ImageView)findViewById(R.id.profile_follow);
+		//prof_follow.setImageResource(R.drawable.ic_follow);
+
+		prof_name=(TextView)findViewById(R.id.profile_name);
+		prof_mail=(TextView)findViewById(R.id.profile_mail);
+
+
+
+		ListView list=(ListView)findViewById(R.id.showprofile_posts);
+		adapter=new ProfileAdapter();
+		list.setAdapter(adapter);
+
+
+		followers = (Button) findViewById(R.id.follower_clk);
+
+		following = (Button) findViewById(R.id.following_clk);
+
+
+
+		/*mConnectivityManager= (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+		mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+
+		if (mNetworkInfo != null && mNetworkInfo.isConnectedOrConnecting())
+		{
+
+			new MyAsyncTask().execute("REG");
+		}
+		else
+		{
+			Toast.makeText(this, "Network Error: No Internet Connection", Toast.LENGTH_LONG).show();
+		}*/	
+
+	}
+	
+	
+	
+	
+	@Override
+	public void onResume() {
+	super.onResume();
+	ErrorDlg = true;
+	rload();
+	}
+	
+	
+	@Override
+	public void onPause() {
+	super.onPause();
+	ErrorDlg = false;
+	}
+	
+	public void rload() {
+		
+		mConnectivityManager= (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+		mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+
+		if (mNetworkInfo != null && mNetworkInfo.isConnectedOrConnecting())
+		{
+
+			new MyAsyncTask().execute("REG");
+		}
+		else
+		{
+			//Toast.makeText(this, "Network Error! No Internet Connection", Toast.LENGTH_LONG).show();
+			ShowNoNetErrorDialoag();
+		}			
+	}
+
+	public void GoIMessanger(View v) {
+		Intent intent = new Intent(this, MessageActivity.class);
+		intent.putExtra(T_DETAIL, UsrNAME);
+		startActivity(intent);
+	}
+
+	public void GoContacts1(View v) {
+		Intent intentContacts = new Intent().setClass(this, ContactsActivity.class)
+				.putExtra(F_MSG, "followers").putExtra(F_USR, prof_name.getText().toString());
+		if(F_USR.length() != 0)
+		{
+		startActivity(intentContacts);
+		}
+	}
+
+
+
+	public void GoContacts2(View v) {
+		Intent intentContacts = new Intent().setClass(this, ContactsActivity.class)
+				.putExtra(F_MSG, "following").putExtra(F_USR, prof_name.getText().toString());
+		if(F_USR.length() != 0)
+		{
+		startActivity(intentContacts);
+		}
+	}
+
+
+    
+	public void Go_profilepic(View v)
+	{
+		Intent intentProfpic = new Intent().setClass(this, ProfilePicActivity.class)
+				.putExtra(PPUsrNAME, UsrNAME);
+		startActivity(intentProfpic);
+	}
+	
+	
+
+	public void confirmFireMissiles() {
+		DialogFragment newFragment = new FireMissilesDialogFragment();
+		newFragment.show(getFragmentManager(), "missiles");
+	}
+
+
+	@SuppressLint("ValidFragment")
+	public class FireMissilesDialogFragment extends DialogFragment {
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			// Use the Builder class for convenient dialog construction
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			builder.setMessage(iresponse.trim())
+			.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					// FIRE ZE MISSILES!
+				}
+			});
+			/*.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                       public void onClick(DialogInterface dialog, int id) {
+                           // User cancelled the dialog
+                       }
+                   });*/
+			// Create the AlertDialog object and return it
+			return builder.create();
+		}
+	}
+
+
+
+
+
+	/*@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.profile, menu);
+		return true;
+	}*/
+
+
+
+	private class MyAsyncTask extends AsyncTask<String, Integer, Double>{
+
+		@Override
+		protected Double doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			postData(params[0]);
+			return null;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+
+			pDialog = new ProgressDialog(ProfileActivity.this);
+			pDialog.setMessage("loading profile...");
+			pDialog.setIndeterminate(false);
+			pDialog.setCancelable(true);
+			pDialog.show();
+		}
+
+
+		protected void onPostExecute(Double result){
+
+			if(null!=iresponse)
+    		{
+			if(iresponse.trim().length()!=0)
+			{
+
+
+				try{
+
+
+
+					JSONObject jsonObj = new JSONObject(iresponse.trim());               	
+					data = jsonObj.getJSONArray("posts");
+					if(data!=null)
+					{
+
+						adapter.clear();
+						
+						data2 = jsonObj.getJSONArray("detail");
+						JSONObject d = data2.getJSONObject(0);
+						emailE = d.getString("email");
+						usrnamE = d.getString("username");
+						numfollowers = d.getString("numfollowers");
+						numfollowing = d.getString("numfollowing");
+					    profimg  = d.getString("profimg");
+						
+                    	int flag = 0;
+                        pimgdata = Base64.decode(profimg, flag);
+
+
+
+						for(int i=0;i<data.length();i++)
+						{
+							JSONObject c = data.getJSONObject(i);
+							String usrname = c.getString("username");
+							String stamp = c.getString("stamp");
+							//String userid = c.getString("userid");
+							String body = c.getString("body");
+
+		                	String pimg = c.getString("pimg");
+		                	String IMG = c.getString("IMG");
+		             	
+		                    	
+		                     	if(IMG.compareTo("NO")==0)
+		                    	{
+		                    	
+		                		           			
+		                	    } 
+		                    	else
+		                    	{
+		                        	int flag0 = 0;
+		                            postimg = Base64.decode(pimg, flag0);
+		                    		
+		                    		
+		                    		
+		                    	}
+							
+							
+							engine r=new engine();
+
+							r.setUsrname(usrname);
+							r.setBody(body);
+							r.setPostimg(postimg);
+							r.setIMG(IMG);
+							r.setDate(stamp);
+
+							adapter.add(r);
+						}
+					}
+
+				} catch (JSONException e){
+
+				} 
+
+				//spimgdata = pimgdata;
+				prof_name.setText(UsrNAME);
+				prof_mail.setText(emailE);
+				
+				if(pimgdata.length!=0)
+				{
+					prof_image.setImageBitmap(BitmapFactory.decodeByteArray(pimgdata, 0, pimgdata.length));
+				}
+				else
+				{
+					prof_image.setImageResource(R.drawable.me);
+				}
+				
+				followers.setText(numfollowers);
+				followers.append(" followers");
+				following.setText(numfollowing);
+				following.append(" following");
+
+				/*	  
+
+            Data0  = iresponse.trim().split("<0>");
+    		Data1  = Data0[1].split("<1>");
+
+    		Data2  = Data1[1].split("\n");
+
+    		prof_name.setText(Data0[0]);
+    		prof_mail.setText(Data1[0]);
+
+    	for(int i=0;i < Data2.length; i++)
+    	{
+    		Data3  = Data2[i].split("<2>");
+
+        	r.setUsrname(Data3[0]);
+        	r.setBody(Data3[1]);
+        	r.setDate(Data3[2]);
+
+        	adapter.add(r);
+    	}*/
+
+				pDialog.dismiss(); 
+			}
+
+
+    		}
+
+			//Toast.makeText(getApplicationContext(),iresponse.trim() , Toast.LENGTH_LONG).show();
+			//confirmFireMissiles();
+
+
+		}
+
+
+		protected void onProgressUpdate(Integer... progress){
+			//pb.setProgress(progress[0]);
+		}
+
+		protected void postData(String valueSend) {
+			// Create a new HttpClient and Post Header
+			HttpParams httpparameters = new BasicHttpParams();
+		    HttpConnectionParams.setConnectionTimeout(httpparameters,LoginActivity.conntimeout);
+		    HttpConnectionParams.setSoTimeout(httpparameters,LoginActivity.socktimeout);
+		    
+			DefaultHttpClient httpclient = new DefaultHttpClient();
+			httpclient.setParams(httpparameters);
+			
+			HttpPost httppost = new HttpPost(/*"http://10.0.2.2/Twitter-Engine/*/LoginActivity.SERVER+"profile_detail.php");
+			//HttpPost httppost = new HttpPost("http://route.pixub.com/profile_detail.php");
+
+			String Header = "get_detail";
+
+			try {
+				// Add your data 
+
+				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+				nameValuePairs.add(new BasicNameValuePair("PacketHead",Header ));
+				nameValuePairs.add(new BasicNameValuePair("UID", UserID ));
+				nameValuePairs.add(new BasicNameValuePair("UNAME", UsrNAME ));
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				ResponseHandler<String> responseHandler = new BasicResponseHandler();
+
+
+				//HttpResponse response;
+
+
+				// Execute HTTP Post Request
+				iresponse = httpclient.execute(httppost, responseHandler);
+
+
+
+
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				Toast.makeText(getApplicationContext(), "Network Error!", Toast.LENGTH_LONG).show();
+				pDialog.dismiss();
+				cancel(true);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+	    		pDialog.dismiss();
+				if(ErrorDlg == true)
+				ShowErrorDialoag();
+			}
+
+
+		}
+
+	}
+
+
+
+
+	
+    @SuppressLint("ValidFragment")
+	public class NetworkErrorDialogFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(LoginActivity.neterrormsg)
+                   .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                       public void onClick(DialogInterface dialog, int id) {
+                    	   rload();
+                       }
+                   })
+                   .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                       public void onClick(DialogInterface dialog, int id) {
+                           // User cancelled the dialog
+                       }
+                   });
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
+    }
+    
+    
+	public void ShowErrorDialoag() {
+	    DialogFragment newFragment = new NetworkErrorDialogFragment();
+	    newFragment.show(getFragmentManager(), "neterror");
+	}
+    
+	
+	
+    @SuppressLint("ValidFragment")
+	public class NoNetErrorDialogFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(LoginActivity.noneterrormsg)
+                   .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                       public void onClick(DialogInterface dialog, int id) {
+                    	  
+                       }
+                   });
+                  
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
+    }
+    
+    
+	public void ShowNoNetErrorDialoag() {
+	    DialogFragment newFragment = new NetworkErrorDialogFragment();
+	    newFragment.show(getFragmentManager(), "noneterror");
+	}
+	
+
+   
+
+
+	class ProfileAdapter extends ArrayAdapter<engine> {
+		ProfileAdapter() {
+			super(ProfileActivity.this, R.layout.prof_row, model);
+		}
+		public View getView(int position, View convertView,
+				ViewGroup parent) {
+			View row=convertView;
+			ProfileHolder holder=null;
+			if (row==null) {
+				LayoutInflater inflater=getLayoutInflater();
+				row=inflater.inflate(R.layout.prof_row, parent, false);
+				holder=new ProfileHolder(row);
+				row.setTag(holder);
+			}
+			else {
+				holder=(ProfileHolder)row.getTag();
+			}
+			holder.populateFrom(model.get(position));
+			return(row);
+		}
+	}
+	static class ProfileHolder {
+		private TextView usrname=null;
+		private TextView body=null;
+		private TextView date=null;
+		private ImageView image=null;
+		private ImageView postimage=null;
+		private View row=null;
+		ProfileHolder(View row) {
+			this.row=row;
+			usrname=(TextView)row.findViewById(R.id.prow_username);
+			body=(TextView)row.findViewById(R.id.prow_body);
+			date=(TextView)row.findViewById(R.id.prow_date_time);
+			image=(ImageView)row.findViewById(R.id.prow_image);
+			postimage=(ImageView)row.findViewById(R.id.prow_postimage);
+		}
+
+		void populateFrom(engine r) {
+			usrname.setText(r.getUsrname());
+			body.setText(r.getBody());
+			date.setText(r.getDate());
+			if(r.getIMG().compareTo("YES")==0)
+			{
+			    postimage.setImageBitmap(BitmapFactory.decodeByteArray(r.getPostimg(), 0, r.getPostimg().length));
+			}
+			else
+			{
+				postimage.setVisibility(View.GONE);
+			}
+			
+			if(pimgdata.length!=0)
+			{
+			image.setImageBitmap(BitmapFactory.decodeByteArray(pimgdata, 0, pimgdata.length));
+			}
+			else
+			{
+				image.setImageResource(R.drawable.me);
+			}
+            
+			
+            
+		}
+	}
+
+
+
+	public void CloseContact() {
+
+
+
+
+
+		Toast.makeText(getApplicationContext(),"closed" , Toast.LENGTH_LONG).show();
+	}
+
+
+
+
+
+
+}
+

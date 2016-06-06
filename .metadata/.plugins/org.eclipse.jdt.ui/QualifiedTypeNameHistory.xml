@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="java.io.InputStream"/>
+<fullyQualifiedTypeName name="android.view.View.OnLongClickListener"/>
+<fullyQualifiedTypeName name="android.app.Notification.Builder"/>
+<fullyQualifiedTypeName name="java.lang.String"/>
+<fullyQualifiedTypeName name="android.media.RingtoneManager"/>
+<fullyQualifiedTypeName name="android.media.Ringtone"/>
+<fullyQualifiedTypeName name="android.content.Intent"/>
+<fullyQualifiedTypeName name="android.os.AsyncTask.Status"/>
+<fullyQualifiedTypeName name="android.provider.MediaStore.Images.ImageColumns"/>
+<fullyQualifiedTypeName name="com.lethalsys.mimix.R.id"/>
+<fullyQualifiedTypeName name="com.javacodegeeks.android.androidexpandablelisteview.R.drawable"/>
+<fullyQualifiedTypeName name="android.widget.ExpandableListView.OnGroupClickListener"/>
+<fullyQualifiedTypeName name="android.os.Message"/>
+<fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
+<fullyQualifiedTypeName name="android.view.View"/>
+<fullyQualifiedTypeName name="android.view.ViewGroup"/>
+</qualifiedTypeNameHistroy>

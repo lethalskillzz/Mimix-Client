@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >   
+    
+     <item android:id="@+id/i_addon_popup_update"        
+         android:showAsAction="ifRoom|withText"      
+           android:title="Update"       
+            android:visible="true"/> 
+              
+              <item android:id="@+id/i_addon_popup_delete"       
+                  android:showAsAction="ifRoom|withText"      
+                    android:title="Delete"        
+                    android:visible="true"/>  
+                    
+                      <item android:id="@+id/i_addon_popup_cancel"    
+                              android:showAsAction="ifRoom|withText"        
+                              android:title="Cancel"       
+                               android:visible="true"/>  
+                               
+                               </menu>
+
+
+
+

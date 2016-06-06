@@ -1,0 +1,566 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_view"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/metro"
+    >
+
+
+
+<com.lethalsys.mimix.SlideHolder 
+    android:id="@+id/slideHolder"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeActivity"
+     >
+
+      <ScrollView  
+        android:layout_width="215dp" 
+        android:layout_height="fill_parent"
+         android:background="#D8000000"
+         
+         > 
+
+             
+        <LinearLayout
+            android:layout_width="215dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+           >  
+
+            <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"  
+            android:clickable="true" 
+            android:background="?android:attr/selectableItemBackground"  
+            android:onClick="GoMyProfile"      
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"  >
+ 
+             
+             <com.android.volley.toolbox.NetworkImageView
+             android:id="@+id/mainmenu_profimg"
+             android:layout_width="55dp"
+             android:layout_height="55dp"
+             android:scaleType="fitXY"
+             android:layout_gravity="center_horizontal"
+             android:layout_marginBottom="1dp"
+             />
+
+         
+             <TextView android:id="@+id/mainmenu_profname"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content" 
+             android:textStyle="bold"
+             android:text="Username"
+             android:textColor="#ffffff"
+             android:textSize="19sp"
+             android:layout_gravity="center"/>
+             <!-- android:layout_marginLeft="22dp"  -->
+                
+ 
+</LinearLayout>
+
+
+         
+            <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="10dp"
+             android:paddingLeft="5dp"
+             android:paddingRight="5dp"
+             android:orientation="vertical" > 
+                
+                
+             <TextView android:id="@+id/home_settings"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content" 
+             android:textStyle="bold|italic"
+             android:text="SETTINGS"
+             android:textColor="#777d8c"
+             android:textSize="12sp"
+             android:layout_gravity="left"/>
+             
+             <View style="@style/MainMenuDivider"/>
+                                  
+             </LinearLayout>     
+     
+          
+            <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:orientation="vertical" > 
+
+                
+               <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal"
+                android:background="?android:attr/selectableItemBackground"     
+                android:clickable="true"   
+                android:onClick="Go_EditProfile" > 
+                
+                   
+               <ImageView 
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:scaleType="fitXY"
+               android:layout_marginRight="3dp"
+               android:layout_marginLeft="-5dp"
+               android:layout_marginTop="-6dp"
+               android:scaleX="0.6"
+               android:scaleY="0.6"
+               android:src="@drawable/ic_setting_profile"
+               />
+     
+                   
+                   <TextView android:id="@+id/home_profile_settings"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content" 
+                   android:text="Profile"
+                   android:textColor="#ffffff"
+                   android:textSize="14sp"
+                   android:layout_gravity="left"/>
+   
+                   
+                </LinearLayout> 
+                
+                <View style="@style/ThinMainMenuDivider"/>
+                                  
+             </LinearLayout> 
+             
+            
+            
+            <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:orientation="vertical" > 
+
+                
+               <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal"
+                android:background="?android:attr/selectableItemBackground" 
+                android:clickable="true"       
+                android:onClick="" > 
+                
+                   
+               <ImageView 
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:scaleType="fitXY"
+               android:layout_marginRight="3dp"
+               android:layout_marginLeft="-5dp"
+               android:layout_marginTop="-6dp"
+               android:scaleX="0.6"
+               android:scaleY="0.6"
+               android:src="@drawable/ic_setting_notification"
+               />
+     
+                   
+                   <TextView android:id="@+id/home_notification_settings"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content" 
+                   android:text="Notifications"
+                   android:textColor="#ffffff"
+                   android:textSize="14sp"
+                   android:layout_gravity="left"/>
+   
+                   
+                </LinearLayout> 
+                
+                <View style="@style/ThinMainMenuDivider"/>
+                                  
+             </LinearLayout>
+             
+ 
+            
+            <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:orientation="vertical" > 
+
+                
+               <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal" 
+                android:background="?android:attr/selectableItemBackground" 
+                android:clickable="true"       
+                android:onClick=""> 
+                
+                   
+               <ImageView 
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:scaleType="fitXY"
+               android:layout_marginRight="3dp"
+               android:layout_marginLeft="-5dp"
+               android:layout_marginTop="-6dp"
+               android:scaleX="0.6"
+               android:scaleY="0.6"
+               android:src="@drawable/ic_setting_display"
+               />
+                   
+                   
+                   <TextView android:id="@+id/home_display_settings"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content" 
+                   android:text="Display"
+                   android:textColor="#ffffff"
+                   android:textSize="14sp"
+                   android:layout_gravity="left"/>
+   
+                   
+                </LinearLayout> 
+                
+                <View style="@style/ThinMainMenuDivider"/>
+                                  
+             </LinearLayout>
+             
+            
+            
+            
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:orientation="vertical" > 
+
+               <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal"
+                android:background="?android:attr/selectableItemBackground"  
+                android:clickable="true"      
+                android:onClick="" > 
+                
+                   
+               <ImageView 
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:scaleType="fitXY"
+               android:layout_marginRight="3dp"
+               android:layout_marginLeft="-5dp"
+               android:layout_marginTop="-6dp"
+               android:scaleX="0.6"
+               android:scaleY="0.6"
+               android:src="@drawable/ic_setting_privacy"
+               />
+       
+                   
+                   <TextView android:id="@+id/home_privacy_settings"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content" 
+                   android:text="Privacy Settings"
+                   android:textColor="#ffffff"
+                   android:textSize="14sp"
+                   android:layout_gravity="left"/>
+   
+                   
+                </LinearLayout> 
+                
+                <View style="@style/ThinMainMenuDivider"/>
+                                  
+             </LinearLayout>
+              
+
+             
+             <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="10dp"
+             android:paddingLeft="5dp"
+             android:paddingRight="5dp"
+             android:orientation="vertical" > 
+                
+                 
+             <TextView android:id="@+id/home_help"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content" 
+             android:textStyle="bold|italic"
+             android:text="HELP"
+             android:textColor="#777d8c"
+             android:textSize="12sp"
+             android:layout_gravity="left"/>
+             
+             <View style="@style/MainMenuDivider"/>
+                                  
+             </LinearLayout> 
+             
+  
+
+             
+            <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:orientation="vertical" > 
+
+                
+               <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal"
+                android:background="?android:attr/selectableItemBackground" 
+                android:clickable="true"       
+                android:onClick="" > 
+                
+               
+               <ImageView 
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:scaleType="fitXY"
+               android:layout_marginRight="3dp"
+               android:layout_marginLeft="-5dp"
+               android:layout_marginTop="-6dp"
+               android:scaleX="0.6"
+               android:scaleY="0.6"
+               android:src="@drawable/ic_about"
+               />
+                   
+                   
+                   <TextView android:id="@+id/home_about_help"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content" 
+                   android:text="About"
+                   android:textColor="#ffffff"
+                   android:textSize="14sp"
+                   android:layout_gravity="left"/>
+   
+                   
+                </LinearLayout> 
+                
+                <View style="@style/ThinMainMenuDivider"/>
+                                  
+             </LinearLayout>
+             
+            
+            
+            <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:orientation="vertical" > 
+
+               <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal"
+                android:background="?android:attr/selectableItemBackground"   
+                android:clickable="true"     
+                android:onClick=""
+                 > 
+                
+                   
+               <ImageView 
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:scaleType="fitXY"
+               android:layout_marginRight="3dp"
+               android:layout_marginLeft="-5dp"
+               android:layout_marginTop="-6dp"
+               android:scaleX="0.6"
+               android:scaleY="0.6"
+               android:src="@drawable/ic_help"
+               />
+     
+                   
+                   <TextView android:id="@+id/home_FAQ_help"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content" 
+                   android:text="FAQ"
+                   android:textColor="#ffffff"
+                   android:textSize="14sp"
+                   android:layout_gravity="left"/>
+   
+                   
+                </LinearLayout> 
+                
+                <View style="@style/ThinMainMenuDivider"/>
+                                  
+             </LinearLayout>
+                     
+            
+            
+             <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="10dp"
+             android:paddingLeft="5dp"
+             android:paddingRight="5dp"
+             android:orientation="horizontal"
+             android:background="?android:attr/selectableItemBackground"
+             android:clickable="true"        
+             android:onClick="Go_LogAwt"
+              > 
+             
+                 
+               <ImageView 
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:scaleType="fitXY"
+               android:layout_marginRight="-8dp"
+               android:layout_marginLeft="-11dp"
+               android:layout_marginTop="-16dp"
+               android:scaleX="0.5"
+               android:scaleY="0.5"
+               android:src="@drawable/ic_logout"
+               />
+     
+                
+             <TextView android:id="@+id/home_logout"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content" 
+             android:textStyle="bold"
+             android:text="LOG OUT"
+             android:textColor="#777d8c"
+             android:textSize="12sp"
+             android:layout_gravity="left"/>
+             
+                                  
+             </LinearLayout> 
+      
+        </LinearLayout>
+    </ScrollView>
+
+  <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#D8000000"
+   >  
+
+     <LinearLayout 
+      android:id="@+id/adhoc_actionbar"   
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:layout_marginLeft="3dp"
+      android:layout_marginRight="3dp"
+      android:layout_gravity="center_horizontal"
+      android:background="@drawable/msrch_custom_edt"
+   >
+      
+     <LinearLayout 
+       android:layout_width="0dp"
+       android:layout_height="match_parent"
+       android:layout_weight="5"
+       android:orientation="horizontal" 
+       android:layout_gravity="left"
+       android:paddingBottom="5dp"
+       android:paddingTop="5dp"
+        > 
+    
+        <ImageButton
+        android:id="@+id/main_option"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:background="?android:attr/selectableItemBackground"        
+        android:src="@drawable/ic_main_menu"
+        />
+        
+        
+        </LinearLayout>
+        
+
+     
+     <LinearLayout 
+       android:layout_width="wrap_content"
+       android:layout_height="match_parent"
+       android:orientation="horizontal" 
+       android:layout_gravity="right"  
+       android:paddingBottom="5dp"
+       android:paddingTop="5dp"            
+        >     
+       
+        
+       <ImageButton 
+        android:id="@+id/mainmenu_search"       
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"        
+        android:src="@drawable/ic_search"
+        android:onClick="show_search"
+        />
+     
+        </LinearLayout>
+        
+     
+     
+     <LinearLayout 
+       android:layout_width="wrap_content"
+       android:layout_height="match_parent"
+       android:orientation="horizontal" 
+       android:layout_gravity="right"
+       android:paddingBottom="5dp"
+       android:paddingTop="5dp"
+        >     
+           
+       <ImageButton
+        android:id="@+id/Writepost_option"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:background="?android:attr/selectableItemBackground"        
+        android:src="@drawable/ic_post_menu"
+        android:onClick="Click_Writepost"
+        />    
+        
+        
+     </LinearLayout>
+     
+     
+     </LinearLayout>
+        
+   
+       <com.viewpagerindicator.IconPageIndicator
+        android:id="@+id/indicator"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+                
+        />
+         
+       
+       
+   <android.support.v4.view.ViewPager  
+    android:id="@+id/home_pager"
+    android:layout_width="fill_parent"
+    android:layout_height="0dp"
+    android:layout_weight="0.86"
+        />  
+        
+
+   
+
+</LinearLayout>
+
+
+</com.lethalsys.mimix.SlideHolder>
+
+</RelativeLayout>

@@ -1,0 +1,32 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center_vertical|center_horizontal"
+    android:background="@drawable/metro" 
+    android:orientation="vertical"
+    > 
+
+    
+    <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/fadehomebg" >                  
+   
+    
+ <ListView
+     android:id="@+id/showmyprofile_posts"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:layout_gravity="center_horizontal"
+     android:layout_margin="4dp"
+     android:background="@android:color/transparent"
+     android:divider="@null"
+     android:dividerHeight="10dp" />
+ 
+ 
+ </LinearLayout>
+ 
+
+</FrameLayout>

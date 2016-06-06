@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    
+    
+    <string name="reg_name">Registration</string>
+    <string name="app_name">Mimix</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_home"></string>
+    <string name="title_activity_contacts">Contacts</string>
+    <string name="title_activity_profile">Profile</string>
+    <string name="title_activity_post"></string>
+    <string name="title_activity_my_profile">My Profile</string>
+    <string name="title_activity_my_contacts">My Contacts</string>
+    <string name="title_activity_all_contacts"></string>
+    <string name="title_activity_message">MessageActivity</string>
+    <string name="title_activity_message_list">Messages</string>
+    <string name="title_activity_profile_image">ProfileImageActivity</string>
+    <string name="title_activity_display_post">DisplayPost</string>
+    <string name="title_activity_profile_pic">Profile</string>
+    <string name="title_activity_my_profile_pic">MyProfile</string>
+    <string name="title_activity_end_quiz_main">EndQuizMainActivity</string>
+    <string name="title_activity_end_quiz">EndQuizActivity</string>
+    <string name="cat_prompt">Choose category</string>
+    <string name="Occup_prompt">Occupation</string>
+    <string name="Dept_prompt">Department</string>
+
+    <string-array name="Gender_array">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+    <string-array name="cat_array">
+        <item>Electronics - Gadgets</item>
+        <item>Books - Literature</item>
+        <item>Jobs - Services</item>
+        <item>Sports - Hobbies</item>
+        <item>Beauty - Fashion</item>
+        <item>Food - Provisions</item>
+    </string-array>
+    <string-array name="Location_array">
+        <item>Abia</item>
+        <item>Adamawa</item>
+        <item>Akwa Ibom</item>
+    </string-array>
+    <string-array name="Dept_array">
+        <item>Agricultural Economics and Extension Technology</item>
+        <item>Animal Production</item>
+        <item>Food Science and Nutrition</item>
+        <item>Crop Production</item>
+        <item>Soil Science</item>
+        <item>Water Resources,Aquaculture &amp; Fishries Technology</item>
+        <item>Agricultural &amp; Bioresources Engineering</item>
+        <item>Chemical Engineering</item>
+        <item>Civil Engineering</item>
+        <item>Computer Engineering</item>
+        <item>Electrical Electronics Engineering</item>
+        <item>Mechanical Engineering</item>
+        <item>Telecommunication Engineering</item>
+        <item>Architecture</item>
+        <item>Building</item>
+        <item>Estate Management</item>
+        <item>Quantity Survey</item>
+        <item>Surveying and Geoinformatics</item>
+        <item>Urban &amp; Regional Planing</item>
+        <item>Enterpreneurship &amp; Business Technology</item>
+        <item>Transport Management</item>
+        <item>Project Management</item>
+        <item>Computer Science</item>
+        <item>Cyber Security</item>
+        <item>Information &amp; Media Technology</item>
+        <item>Biochemistry</item>
+        <item>Biological Science</item>
+        <item>Chemistry</item>
+        <item>Geography</item>
+        <item>Geology</item>
+        <item>Industrial &amp; Technology Education</item>
+        <item>Library Science</item>
+        <item>Maths &amp; Statistics</item>
+        <item>Microbiology</item>
+        <item>Physics</item>
+        <item>Science Education</item>
+    </string-array>
+
+    <string name="title_activity_rating">RatingActivity</string>
+    <string name="title_activity_main_contacts">MainContactsActivity</string>
+    <string name="title_activity_notifications">NotificationsActivity</string>
+    <string name="title_activity_display_hash_main">DisplayHashMainActivity</string>
+    <string name="title_activity_add_phone_contact">AddPhoneContactActivity</string>
+    <string name="title_activity_comment">CommentActivity</string>
+    <string name="title_activity_add_new_contact">AddNewContactActivity</string>
+    <string name="title_activity_edit_profile">EditProfileActivity</string>
+    <string name="title_activity_display_notif_post">DisplayNotifPostActivity</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_launch">Mimix</string>
+    <string name="hello_world">Hello world!</string>
+
+</resources>

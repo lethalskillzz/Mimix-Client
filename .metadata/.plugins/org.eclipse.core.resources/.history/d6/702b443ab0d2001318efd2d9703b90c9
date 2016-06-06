@@ -1,0 +1,546 @@
+package com.lethalsys.mimix;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class MyProfileActivity extends Activity {
+
+
+	public final static String MYF_MSG = "com.lethalsys.mimix.MYFMESSAGE";
+
+	
+	private TextView prof_name=null;
+	private TextView prof_mail=null;
+	String iresponse;
+	String UsrNAME;
+
+
+	private String UserID;
+	String usrnamE;
+	String emailE;
+	private String numfollowers;
+	private String numfollowing;
+
+	private Button followers=null;
+	private Button following=null;
+	
+	private ImageView prof_image=null;
+	private Bitmap bitmap;
+	byte[] imgdata;
+	String imgfile;
+
+	// number of images to select
+	private static final int PICK_IMAGE = 1;
+	
+	private ProgressDialog pDialog;
+
+	UseID_Database uidhelper;
+
+	List<engine> model=new ArrayList<engine>();
+	ProfileAdapter adapter=null;
+
+	JSONArray data = null;
+	JSONArray data2 = null;
+
+	public static ConnectivityManager mConnectivityManager;
+	public static NetworkInfo mNetworkInfo;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_my_profile);
+
+		uidhelper=new UseID_Database(this);
+		UserID = uidhelper.getID();	   
+
+		//Toast.makeText(getApplicationContext(),UserID , Toast.LENGTH_LONG).show();
+
+
+		prof_image=(ImageView)findViewById(R.id.profile_image);	
+		prof_image.setImageResource(R.drawable.ic_mee);
+
+		prof_name=(TextView)findViewById(R.id.profile_name);
+		prof_mail=(TextView)findViewById(R.id.profile_mail);
+
+
+
+		ListView list=(ListView)findViewById(R.id.showprofile_posts);
+		adapter=new ProfileAdapter();
+		list.setAdapter(adapter);
+
+		followers = (Button) findViewById(R.id.follower_clk);
+
+		following = (Button) findViewById(R.id.following_clk);
+
+
+
+		mConnectivityManager= (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+		mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+
+		if (mNetworkInfo != null && mNetworkInfo.isConnectedOrConnecting())
+		{
+
+			new MyAsyncTask().execute("get_mydetail");
+		}
+		else
+		{
+			Toast.makeText(this, "Network Error! n/ No Internet Connection", Toast.LENGTH_LONG).show();
+		}	
+
+	}
+
+
+
+	public void GoContacts1(View v) {
+		Intent intentContacts = new Intent().setClass(this, MyContactsActivity.class)
+				.putExtra(MYF_MSG, "followers");
+		startActivity(intentContacts);
+	}
+
+
+
+	public void GoContacts2(View v) {
+		Intent intentContacts = new Intent().setClass(this, MyContactsActivity.class)
+				.putExtra(MYF_MSG, "following");
+		startActivity(intentContacts);
+	}
+	
+	
+	
+	public void Go_profilepic(View v)
+	{
+		Intent intentProfpic = new Intent().setClass(this, ProfilePicActivity.class);
+				//.putExtra(, );
+		startActivity(intentProfpic);
+	}
+	
+	
+	
+
+	public void confirmFireMissiles() {
+		DialogFragment newFragment = new FireMissilesDialogFragment();
+		newFragment.show(getFragmentManager(), "missiles");
+	}
+
+
+	@SuppressLint("ValidFragment")
+	public class FireMissilesDialogFragment extends DialogFragment {
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			// Use the Builder class for convenient dialog construction
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			builder.setMessage(iresponse.trim())
+			.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					// FIRE ZE MISSILES!
+				}
+			});
+			/*.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                       public void onClick(DialogInterface dialog, int id) {
+                           // User cancelled the dialog
+                       }
+                   });*/
+			// Create the AlertDialog object and return it
+			return builder.create();
+		}
+	}
+
+
+
+
+
+	
+	
+	/**
+	 * Opens dialog picker, so the user can select image from the gallery. The
+	 * result is returned in the method <code>onActivityResult()</code>
+	 */
+	public void selectImageFromGallery() {
+		Intent intent = new Intent();
+		intent.setType("image/*");
+		intent.setAction(Intent.ACTION_GET_CONTENT);
+		startActivityForResult(Intent.createChooser(intent, "Select Picture"),
+				PICK_IMAGE);
+	}
+
+	/**
+	 * Retrives the result returned from selecting image, by invoking the method
+	 * <code>selectImageFromGallery()</code>
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (requestCode == PICK_IMAGE && resultCode == RESULT_OK
+				&& null != data) {
+			Uri selectedImage = data.getData();
+			String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+			Cursor cursor = getContentResolver().query(selectedImage,
+					filePathColumn, null, null, null);
+			cursor.moveToFirst();
+
+			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+			String picturePath = cursor.getString(columnIndex);
+			cursor.close();
+
+			decodeFile(picturePath);
+
+		}
+	}
+
+	/**
+	 * The method decodes the image file to avoid out of memory issues. Sets the
+	 * selected image in to the ImageView.
+	 * 
+	 * @param filePath
+	 */
+	public void decodeFile(String filePath) {
+		// Decode image size
+		BitmapFactory.Options o = new BitmapFactory.Options();
+		o.inJustDecodeBounds = true;
+		BitmapFactory.decodeFile(filePath, o);
+
+		// The new size we want to scale to
+		final int REQUIRED_SIZE = 1024;
+
+		// Find the correct scale value. It should be the power of 2.
+		int width_tmp = o.outWidth, height_tmp = o.outHeight;
+		int scale = 1;
+		while (true) {
+			if (width_tmp < REQUIRED_SIZE && height_tmp < REQUIRED_SIZE)
+				break;
+			width_tmp /= 2;
+			height_tmp /= 2;
+			scale *= 2;
+		}
+
+		// Decode with inSampleSize
+		BitmapFactory.Options o2 = new BitmapFactory.Options();
+		o2.inSampleSize = scale;
+		bitmap = BitmapFactory.decodeFile(filePath, o2);
+
+		//prof_image.setImageBitmap(bitmap);
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		bitmap.compress(CompressFormat.JPEG, 100, bos);
+		imgdata = bos.toByteArray();
+		int flag = 0;
+		imgfile = Base64.encodeToString(imgdata, flag);
+		
+		
+	    mConnectivityManager= (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+	    mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+
+	    if (mNetworkInfo != null && mNetworkInfo.isConnectedOrConnecting())
+	    {
+        
+	    	new MyAsyncTask().execute("changeprofpic");
+        }
+        else
+        {
+        	Toast.makeText(this, "Network Error: No Internet Connection", Toast.LENGTH_LONG).show();
+        }
+    	
+	}
+	
+	
+	
+	
+	
+
+
+	private class MyAsyncTask extends AsyncTask<String, Integer, Double>{
+
+		@Override
+		protected Double doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			postData(params[0]);
+			return null;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+
+			pDialog = new ProgressDialog(MyProfileActivity.this);
+			pDialog.setMessage("loading profile...");
+			pDialog.setIndeterminate(false);
+			pDialog.setCancelable(true);
+			pDialog.show();
+		}
+
+
+		protected void onPostExecute(Double result){
+
+			if(iresponse.trim().length()!=0)
+			{
+
+
+				try{
+
+
+					JSONObject jsonObj = new JSONObject(iresponse.trim());               	
+					data = jsonObj.getJSONArray("posts");
+
+					if(data!=null)
+					{
+
+
+						data2 = jsonObj.getJSONArray("detail");
+						JSONObject d = data2.getJSONObject(0);
+						emailE = d.getString("email");
+						numfollowers = d.getString("numfollowers");
+						numfollowing = d.getString("numfollowing");
+						usrnamE = d.getString("username");
+
+						for(int i=0;i<data.length();i++)
+						{
+							JSONObject c = data.getJSONObject(i);
+							String usrname = c.getString("username");
+							String stamp = c.getString("stamp");
+							String userid = c.getString("userid");
+							String body = c.getString("body");
+							//usrnamE = usrname;
+
+							engine r=new engine();
+
+							r.setUsrname(usrname);
+							r.setBody(body);
+							r.setDate(stamp);
+
+							adapter.add(r);
+						}
+
+					}
+				} catch (JSONException e){
+
+				} 
+
+				prof_name.setText(usrnamE);
+				prof_mail.setText(emailE);
+
+				followers.setText(numfollowers);
+				followers.append(" followers");
+				following.setText(numfollowing);
+				following.append(" following");
+				/*	
+
+            Data0  = iresponse.trim().split("<0>");
+    		Data1  = Data0[1].split("<1>");
+
+    		Data2  = Data1[1].split("\n");
+
+    		prof_name.setText(Data0[0]);
+    		prof_mail.setText(Data1[0]);
+
+    	for(int i=0;i < Data2.length; i++)
+    	{
+    		Data3  = Data2[i].split("<2>");
+
+        	r.setUsrname(Data3[0]);
+        	r.setBody(Data3[1]);
+        	r.setDate(Data3[2]);
+
+        	adapter.add(r);
+    	}*/
+
+				pDialog.dismiss(); 
+			}
+
+
+
+
+			//Toast.makeText(getApplicationContext(),iresponse.trim() , Toast.LENGTH_LONG).show();
+			//confirmFireMissiles();
+
+
+		}
+
+
+		protected void onProgressUpdate(Integer... progress){
+			//pb.setProgress(progress[0]);
+		}
+
+		protected void postData(String Header) {
+			// Create a new HttpClient and Post Header
+			HttpClient httpclient = new DefaultHttpClient();
+
+
+			//HttpPost httppost = new HttpPost("http://10.0.2.2/Twitter-Engine/profile_detail.php");
+		    HttpPost httppost = new HttpPost("http://route.pixub.com/profile_detail.php");
+
+
+			//String Header = "get_mydetail";
+
+			try {
+				// Add your data
+
+				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+				nameValuePairs.add(new BasicNameValuePair("PacketHead",Header ));
+				nameValuePairs.add(new BasicNameValuePair("UID", UserID ));
+				if(Header.compareTo("changeprofpic")==0)
+				{
+				nameValuePairs.add(new BasicNameValuePair("PROFPIC", imgfile ));
+				}
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				ResponseHandler<String> responseHandler = new BasicResponseHandler();
+
+
+				//HttpResponse response;
+
+
+				// Execute HTTP Post Request
+				iresponse = httpclient.execute(httppost, responseHandler);
+
+
+
+
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				Toast.makeText(getApplicationContext(), "Network Error!", Toast.LENGTH_LONG).show();
+				pDialog.dismiss();
+				cancel(true);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+			}
+
+
+		}
+
+	}
+
+
+
+
+
+	class ProfileAdapter extends ArrayAdapter<engine> {
+		ProfileAdapter() {
+			super(MyProfileActivity.this, R.layout.prof_row, model);
+		}
+		public View getView(int position, View convertView,
+				ViewGroup parent) {
+			View row=convertView;
+			ProfileHolder holder=null;
+			if (row==null) {
+				LayoutInflater inflater=getLayoutInflater();
+				row=inflater.inflate(R.layout.prof_row, parent, false);
+				holder=new ProfileHolder(row);
+				row.setTag(holder);
+			}
+			else {
+				holder=(ProfileHolder)row.getTag();
+			}
+			holder.populateFrom(model.get(position));
+			return(row);
+		}
+	}
+	static class ProfileHolder {
+		private TextView usrname=null;
+		private TextView body=null;
+		private TextView date=null;
+		private ImageView image=null;
+		private View row=null;
+		ProfileHolder(View row) {
+			this.row=row;
+			usrname=(TextView)row.findViewById(R.id.prow_username);
+			body=(TextView)row.findViewById(R.id.prow_body);
+			date=(TextView)row.findViewById(R.id.prow_date_time);
+			image=(ImageView)row.findViewById(R.id.prow_image);
+		}
+
+		void populateFrom(engine r) {
+			usrname.setText(r.getUsrname());
+			body.setText(r.getBody());
+			date.setText(r.getDate());
+
+			image.setImageResource(R.drawable.ic_mee);
+
+		}
+	}
+
+
+
+
+
+
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.my_profile, menu);
+		return true;
+	}
+	
+	
+	
+	
+	   @Override
+	    public boolean onOptionsItemSelected(MenuItem item) {
+	        // Handle presses on the action bar items
+	        switch (item.getItemId()) {
+	    
+				 
+	            case R.id.action_changeppic:
+	            {
+	            	
+
+	           
+	            }
+	            	 return true;
+	                
+	            default:
+	                return super.onOptionsItemSelected(item);
+	        }
+	    } 
+	
+	
+	
+
+}

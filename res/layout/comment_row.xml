@@ -1,0 +1,69 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+android:orientation="horizontal"
+android:padding="4dp"
+android:descendantFocusability="blocksDescendants"
+>
+
+    
+<com.android.volley.toolbox.NetworkImageView
+android:id="@+id/commentrow_image"
+android:layout_width="45dp"
+android:layout_height="45dp"
+android:scaleType="fitXY"
+android:layout_marginRight="4dp"
+android:adjustViewBounds="true"
+/>
+
+
+
+<LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:orientation="vertical"
+     >
+
+    
+ <LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+     >
+    
+<TextView android:id="@+id/commentrow_username"
+android:layout_width="wrap_content"
+android:layout_height="0dp"
+android:layout_weight="1"
+android:layout_marginTop="-5dp"
+android:textStyle="bold"
+android:singleLine="true"
+android:textSize="19sp"
+android:ellipsize="end"
+android:textColorLink="#2f6699"
+/>
+
+<TextView  
+    android:id="@+id/commentrow_date_time"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="left"
+    android:singleLine="true"
+    android:textColor="#5a5a60"
+    android:textSize="12sp"
+    android:textStyle="italic" />
+
+</LinearLayout>
+
+<TextView
+    android:id="@+id/commentrow_comment"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="16sp"
+     />
+
+</LinearLayout>
+
+
+</LinearLayout>

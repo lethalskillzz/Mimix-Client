@@ -1,0 +1,116 @@
+package com.lethalsys.mimix;
+
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+
+class PostDatabase extends SQLiteOpenHelper {
+private static final String DATABASE_NAME="postdb.db";
+private static final int SCHEMA_VERSION=1;
+public PostDatabase(Context context) {
+super(context, DATABASE_NAME, null, SCHEMA_VERSION);
+}
+@Override
+public void onCreate(SQLiteDatabase db) {
+	db.execSQL("CREATE TABLE posts (_id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT, body TEXT, pimage BLOB, date TEXT, type TEXT);");
+	db.execSQL("CREATE TABLE msgs (_id INTEGER PRIMARY KEY AUTOINCREMENT,who TEXT, msgbody TEXT, date TEXT);");
+}
+
+
+
+@Override
+public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+	// no-op, since will not be called until 2nd schema
+	// version exists
+}
+
+
+
+public void Clear() {
+	getWritableDatabase().execSQL("DELETE FROM "+"posts"+";");
+}
+
+
+public void ClearMsg() {
+	getWritableDatabase().execSQL("DELETE FROM "+"msgs"+";");
+}
+
+
+
+
+
+public void insert(String name, String body,
+byte[] pimage, String date, String type) {
+ContentValues cv=new ContentValues();
+cv.put("name", name);
+cv.put("body", body);
+cv.put("pimage", pimage);
+cv.put("date", date);
+cv.put("type", type);
+getWritableDatabase().insert("posts", "name", cv);
+}
+
+
+public void insertMsg(String who, String msgbody,
+String date) {
+ContentValues cv=new ContentValues();
+cv.put("who", who);
+cv.put("msgbody", msgbody);
+cv.put("date", date);
+getWritableDatabase().insert("msgs", "who", cv);
+}
+
+
+
+
+
+public Cursor getAll() {
+return(getReadableDatabase()
+.rawQuery("SELECT _id, name, body, pimage, date, type FROM posts ORDER BY _id ASC",
+null));
+}
+
+
+public String getName(Cursor c) {
+return(c.getString(1));
+}
+public String getBody(Cursor c) {
+return(c.getString(2));
+}
+
+public byte[] getBmp(Cursor c) {
+return(c.getBlob(3));
+}
+
+public String getDate(Cursor c) {
+return(c.getString(4));
+}
+
+public String getType(Cursor c) {
+return(c.getString(5));
+}
+
+public Cursor getAllMsg() {
+return(getReadableDatabase()
+.rawQuery("SELECT _id, who, msgbody, date FROM msgs ORDER BY _id DESC",
+null));
+}
+
+
+public String getWho(Cursor c) {
+return(c.getString(1));
+}
+public String getMsgBody(Cursor c) {
+return(c.getString(2));
+}
+
+public String getMsgDate(Cursor c) {
+return(c.getString(3));
+}
+
+
+}

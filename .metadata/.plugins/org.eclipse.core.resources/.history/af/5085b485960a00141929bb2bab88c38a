@@ -1,0 +1,142 @@
+package com.lethalsys.mimix;
+
+import android.app.Activity;
+import android.content.Context;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+public class CommerceActivity extends Activity {
+
+	GridView gridView;
+
+	static final String[] MOBILE_OS = new String[] { "Electronics-Gadgets", "Beauty-Fashion", "Jobs-Services", "Books-Literature", "Food-Provisions" };
+	
+	Gridadapter Adapter;
+
+
+	
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_commerce);
+		
+		
+		Adapter = new Gridadapter(this, MOBILE_OS);
+		
+		gridView = (GridView) findViewById(R.id.commerce_gridView);
+
+		gridView.setAdapter(Adapter);
+
+		gridView.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View v,
+					int position, long id) {
+			
+			if(((TextView) v.findViewById(R.id.comm_label)).getText().equals(""))
+	    	{
+
+	    	}
+
+			}
+		});
+
+	
+		
+	}
+	
+	
+	
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.commerce, menu);
+		return true;
+	}
+	
+	
+	
+	
+    class Gridadapter extends BaseAdapter {
+	private Context context;
+	private final String[] activity;
+
+	public Gridadapter(Context context, String[] activity) {
+		this.context = context;
+		this.activity = activity;
+	}
+
+	public View getView(int position, View convertView, ViewGroup parent) {
+
+		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+		View gridView;
+
+		if (convertView == null) {
+
+			gridView = new View(context);
+
+			gridView = inflater.inflate(R.layout.acad_grid, null);
+
+			TextView textView = (TextView) gridView.findViewById(R.id.comm_label);
+			
+			textView.setText(activity[position]);
+
+			ImageView flag = (ImageView) gridView .findViewById(R.id.comm_item);
+
+			String mobile = activity[position];
+
+			if (mobile.equals("Electronics-Gadgets")) {
+				flag.setImageResource(R.drawable.electronics_gadgets);
+			} else if (mobile.equals("Beauty-Fashion")) {
+				flag.setImageResource(R.drawable.beauty_fashion);			
+			} else if (mobile.equals("Jobs-Services")) {
+				flag.setImageResource(R.drawable.jobs_services);			
+			} else if (mobile.equals("Books-Literature")) {
+				flag.setImageResource(R.drawable.books_literature);			
+			} else if (mobile.equals("Food-Provisions")) {
+				flag.setImageResource(R.drawable.food_provisions);			
+			}
+			/*else {
+				flag.setImageResource(R.drawable.britishflag);
+			}*/
+
+		} else {
+			gridView = (View) convertView;
+		}
+
+		return gridView;
+	}
+
+	@Override
+	public int getCount() {
+		return activity.length;
+	}
+
+	@Override
+	public Object getItem(int position) {
+		return null;
+	}
+
+	@Override
+	public long getItemId(int position) {
+		return 0;
+	}
+
+}
+
+
+
+	
+	
+
+}

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    
+    
+    
+<LinearLayout android:id="@+id/home_addon_bg"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="5dp" >
+    
+ 
+    <com.etsy.android.grid.util.DynamicHeightImageView
+        android:id="@+id/home_addon_item"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="0sp"
+        android:scaleType="fitXY" />
+
+    
+<com.etsy.android.grid.util.DynamicHeightTextView
+android:id="@+id/home_addon_label"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_gravity="center_horizontal"
+android:textStyle="bold"
+android:singleLine="true"
+android:ellipsize="end"
+android:textColor="#ffffff"
+/> 
+ 
+
+</LinearLayout>
+
+</RelativeLayout>

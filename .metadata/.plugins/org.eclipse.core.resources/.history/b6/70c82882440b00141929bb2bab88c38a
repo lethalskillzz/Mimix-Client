@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.lethalsys.mimix"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="11"
+        android:targetSdkVersion="18" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:name="com.lethalsys.mimix.CurrentQuiz"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.lethalsys.mimix.MainActivity"
+            android:label="@string/reg_name" >
+        </activity>
+        <activity
+            android:name="com.lethalsys.mimix.LoginActivity"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.lethalsys.mimix.HomeActivity"
+            android:label="@string/title_activity_home" >
+        </activity>
+        <activity
+            android:name="com.lethalsys.mimix.ContactsActivity"
+            android:label="@string/title_activity_contacts"
+            android:launchMode="standard" >
+        </activity>
+        <activity
+            android:name="com.lethalsys.mimix.ProfileActivity"
+            android:label="@string/title_activity_profile"
+            android:launchMode="standard" >
+        </activity>
+        <activity
+            android:name="com.lethalsys.mimix.PostActivity"
+            android:label="@string/title_activity_post"
+            android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" >
+        </activity>
+        <activity
+            android:name="com.lethalsys.mimix.MyProfileActivity"
+            android:label="@string/title_activity_my_profile" >
+        </activity>
+        <activity
+            android:name="com.lethalsys.mimix.MyContactsActivity"
+            android:label="@string/title_activity_my_contacts" >
+        </activity>
+        <activity
+            android:name="com.lethalsys.mimix.AllContactsActivity"
+            android:label="@string/title_activity_all_contacts" >
+        </activity>
+
+        <service
+            android:name="com.lethalsys.mimix.PostMonitor"
+            android:enabled="true" />
+        <service
+            android:name="com.lethalsys.mimix.IM_Monitor"
+            android:enabled="true" />
+
+        <activity
+            android:name="com.lethalsys.mimix.MessageActivity"
+            android:label="@string/title_activity_message" >
+        </activity>
+        <activity
+            android:name="com.lethalsys.mimix.MessageListActivity"
+            android:label="@string/title_activity_message_list" >
+        </activity>
+        <activity
+            android:name="com.lethalsys.mimix.ProfileImageActivity"
+            android:label="@string/title_activity_profile_image" >
+        </activity>
+        <activity
+            android:name="com.lethalsys.mimix.DisplayPostActivity"
+            android:label="@string/title_activity_display_post" >
+        </activity>
+        <activity
+            android:name="com.lethalsys.mimix.ProfilePicActivity"
+            android:label="@string/title_activity_profile_pic" >
+        </activity>
+        <activity
+            android:name="com.lethalsys.mimix.MyProfilePicActivity"
+            android:label="@string/title_activity_my_profile_pic" >
+        </activity>
+        <activity
+            android:name="com.lethalsys.mimix.FourbuttonActivity"
+            android:label="@string/title_activity_fourbutton" >
+        </activity>
+        <activity
+            android:name="com.lethalsys.mimix.Acad1Activity"
+            android:label="@string/title_activity_acad1" >
+        </activity>
+        <activity
+            android:name="com.lethalsys.mimix.EndQuizMainActivity"
+            android:label="@string/title_activity_end_quiz_main" >
+        </activity>
+        <activity
+            android:name="com.lethalsys.mimix.EndQuizActivity"
+            android:label="@string/title_activity_end_quiz" >
+        </activity>
+        <activity
+            android:name="com.lethalsys.mimix.QuizActivity"
+            android:label="@string/title_activity_quiz" >
+        </activity>
+        <activity
+            android:name="com.lethalsys.mimix.QuizSelectActivity"
+            android:label="@string/title_activity_quiz_select" >
+        </activity>
+        <activity
+            android:name="com.lethalsys.mimix.QuizSelect2Activity"
+            android:label="@string/title_activity_quiz_select2" >
+        </activity>
+        <activity
+            android:name="com.lethalsys.mimix.CommerceActivity"
+            android:label="@string/title_activity_commerce" >
+        </activity>
+    </application>
+
+</manifest>

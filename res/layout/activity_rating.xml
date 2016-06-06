@@ -1,0 +1,77 @@
+           <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="280dp"
+            android:layout_height="match_parent"
+            android:background="#48eeedf3"
+              android:gravity="center">
+            
+               
+            <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" 
+               >
+
+    <RatingBar
+        android:id="@+id/main_ratingbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginRight="6dp"
+        android:layout_marginTop="24dp"
+        android:numStars="5"
+        android:rating="1.5"
+        android:stepSize="0.1" />
+
+         <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+        android:layout_marginTop="14dp"
+         android:layout_marginBottom="12dp"
+         >
+         
+             
+                              
+            <TextView
+             android:id="@+id/rate_count"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:ellipsize="end"
+             android:layout_marginLeft="6dp"
+             android:singleLine="true"
+             android:text="1.5/5.0"
+             android:textColor="#ffffff" />
+ 
+   
+      <ProgressBar
+        android:id="@+id/rate_progressBar"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_marginLeft="135dp"
+        android:indeterminate="true"
+        android:minHeight="50dp"
+        android:minWidth="50dp"
+        android:progress="3"
+        android:indeterminateDrawable="@drawable/costum_progress_bar"
+        android:padding="3dp"
+        android:visibility="gone" 
+     />
+            
+               <Button
+                android:id="@+id/rating_btn"
+                android:layout_width="60dp"
+                android:layout_height="36dp"
+                android:layout_marginLeft="126dp"
+                android:background="@drawable/post_btn"
+                android:onClick="Rate"
+                android:text="Done"
+                android:padding="4dp"
+                android:textColor="#ffffff"
+                android:textSize="13sp" /> 
+                
+ 
+</LinearLayout>
+</LinearLayout>
+</RelativeLayout>

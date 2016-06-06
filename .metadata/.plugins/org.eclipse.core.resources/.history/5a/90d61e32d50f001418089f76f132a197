@@ -1,0 +1,494 @@
+package com.lethalsys.mimix;
+
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+
+
+public class LoginActivity extends Activity implements OnClickListener{
+	 
+	public final static String EXTRA_MESSAGE = "com.lethalsys.mimix.MESSAGE";
+	
+	//public final static String SERVER = "http://10.0.2.2/Twitter-Engine/";
+    public final static String SERVER = "http://route.pixub.com/";
+	
+	String GCM_PROJECT_NUMBER = "98391239133";
+	
+	public final static int conntimeout = 15000;
+	public final static int socktimeout = 30000;
+	
+	public final static String neterrormsg = "I\\O Exception... \nError connecting to the internet.";
+	public final static String noneterrormsg = "\r Error... No Internet connection. \n Check your Internet settings and try again.";
+	
+	private ProgressDialog pDialog;
+	
+	private EditText Usernamevalue;
+	private EditText Passwordvalue;
+	private Button btn;  
+	//private ProgressBar pb;
+	private String iresponse;
+	//private String[] Data;
+	//private ImageView  main_image;
+	
+	UseID_Database uidhelper=null;
+	
+	public static ConnectivityManager mConnectivityManager;
+	public static NetworkInfo mNetworkInfo;
+	
+	GoogleCloudMessaging gcm;
+	
+	JSONArray data = null;
+	String msg; 
+	String userid;
+   // String regid;
+	String user_name;
+	String pass_word;
+
+	engine r;
+	String URL;
+	
+	Boolean ErrorDlg = true;
+	String regid; 
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	setContentView(R.layout.activity_login);
+	
+	uidhelper=new UseID_Database(this);
+	//r = new engine();
+	
+	//if(uidhelper.getID()!=null)
+	if("x".compareTo(uidhelper.getID())!=0)
+	{
+		Go_Home();
+		ClosMe();		
+		//Toast.makeText(this, "not_empty", Toast.LENGTH_LONG).show();
+	}
+	
+
+
+	setTitle("Login");
+	
+	Usernamevalue=(EditText)findViewById(R.id.user_edttxt);
+	Passwordvalue=(EditText)findViewById(R.id.pwd_edttxt);
+	btn=(Button)findViewById(R.id.login_button);
+	//pb=(ProgressBar)findViewById(R.id.progressBar);
+	//pb.setVisibility(View.GONE);
+	btn.setOnClickListener(this);
+	
+	//main_image=(ImageView)findViewById(R.id.main_img);	
+	//main_image.setImageResource(R.drawable.ic_main);
+	
+	
+	}
+	
+	
+	public void onResume()
+	{
+		super.onResume();
+		ErrorDlg = true;
+	}
+	
+	@Override
+	public void onPause() {
+	super.onPause();
+	ErrorDlg = false;
+	}
+	
+	
+    public void onClick(View v) {
+       
+   	
+    //     AUTH();
+    	getRegId();
+       	
+    		
+     }
+	
+	
+	public void AUTH() {
+		
+    	if(getRegId().compareTo("Error")!=0)
+       	{
+    	if(Usernamevalue.getText().toString().length()<1){
+    		Toast.makeText(this, "please enter username", Toast.LENGTH_LONG).show();
+    	}
+    	if(Passwordvalue.getText().toString().length()<1){
+    		Toast.makeText(this, "please enter password", Toast.LENGTH_LONG).show();
+    	}else{
+    	//pb.setVisibility(View.VISIBLE);
+        
+    	    mConnectivityManager= (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+    	    mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+
+    	    if (mNetworkInfo != null && mNetworkInfo.isConnectedOrConnecting())
+    	    {
+            
+            	// new MyAsyncTask().execute();
+            }
+            else
+            {
+            	//Toast.makeText(this, "Network Error! No Internet Connection", Toast.LENGTH_LONG).show();
+            	ShowNoNetErrorDialoag();
+            }
+         
+    	}	
+    	
+       	}
+    	else
+    	{
+    		ShowNoNetErrorDialoag();
+    	}
+		
+	}
+	
+	
+ public String getRegId(){
+	  
+    new AsyncTask<Void, Void, String>() {
+        @Override
+        protected String doInBackground(Void... params) {
+            String id_msg = "";
+            try {
+                if (gcm == null) {
+                    gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
+                }
+               
+                regid = gcm.register(GCM_PROJECT_NUMBER);
+                id_msg = regid;
+                
+
+            } catch (IOException ex) {
+               // id_msg = "Error :" + ex.getMessage();
+            	id_msg = "Error";
+
+            }
+            return id_msg;
+        }
+        
+        @Override
+        protected void onPostExecute(String id_msg) {
+           // etRegId.setText(msg + "\n");
+        	if(id_msg.equals("Error"))
+        	{
+        		regid = "Error";
+        	}
+        	
+        	//ShowNoNetErrorDialoag();
+        		
+        	//else
+        		
+        	
+        }
+    }.execute(null, null, null);
+    
+    return regid;
+}
+
+	
+	
+    public void startReg(View view) {
+    	Intent intent = new Intent(this, MainActivity.class);
+    	startActivity(intent);
+    	}  
+    
+    
+    
+    public void Go_Home() {
+    	Intent intent = new Intent(this, FourbuttonActivity.class);
+    	intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+    	//intent.putExtra(EXTRA_MESSAGE, Data[1]);
+    	startActivity(intent);
+    	}  
+    
+
+    
+
+    
+    /*private class MyAsyncTask extends AsyncTask<String, Integer, Double>{
+    	 
+ 
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			pDialog = new ProgressDialog(LoginActivity.this);
+			pDialog.setMessage("login in...");
+			pDialog.setIndeterminate(false);
+			pDialog.setCancelable(false);
+			pDialog.show();
+		}
+    	
+    	@Override
+    	protected Double doInBackground(String... params) {
+    	// TODO Auto-generated method stub
+    	postData();
+    	return null;
+    	}
+    	 
+    	protected void onPostExecute(Double result){
+    	//pb.setVisibility(View.GONE);
+    	
+    	//Toast.makeText(getApplicationContext(), "command sent", Toast.LENGTH_LONG).show();
+    	//iresponse = Xml.parse(getResponseBody(response), new CustomXmlParser()); //response.getStatusLine().getReasonPhrase();response.toString();
+    	if(null!=iresponse)
+    	{
+    		
+        if(iresponse.trim().length()!=0)
+        {
+
+        //Data  = iresponse.trim().split(":");
+        	//Toast.makeText(getApplicationContext(), iresponse.trim(), Toast.LENGTH_LONG).show();
+    	
+    		try{
+    			
+    			
+    			JSONObject jsonObj = new JSONObject(iresponse.trim()); 
+    			
+
+    			
+    			data = jsonObj.getJSONArray("data");
+    			
+    			if(data!=null)
+    			{
+    			
+    			
+    			
+    			JSONObject d = data.getJSONObject(0);
+    		    msg = d.getString("msg");
+    		     
+    		    
+            	if("LOGGED IN!".compareTo(msg)==0)
+            	{
+            		userid = d.getString("uid");
+            		user_name = d.getString("user_name");
+            		pass_word = d.getString("pass_word");
+            		
+            		uidhelper.Clear();		
+            	    uidhelper.insert(userid,regid,user_name,pass_word);
+            	    
+            	    
+            	    pDialog.setMessage("login successful");
+            	    pDialog.dismiss();
+            	    
+            	    
+            		Go_Home();
+            		ClosMe();
+            	}
+            	else
+            	{
+            		Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+            		pDialog.dismiss();
+            	}
+
+    			}
+    		    
+    		} catch (JSONException e){
+    			
+    		} 
+    	
+    		
+        	
+            }
+    	}
+    	
+    	}
+    	
+    	
+    	protected void onProgressUpdate(Integer... progress){
+    	//pb.setProgress(progress[0]);
+    	}
+
+    	protected void postData() {
+    		
+    	//URL = SERVER+"loginA.php";	
+    	// Create a new HttpClient and Post Header
+			HttpParams httpparameters = new BasicHttpParams();
+		    HttpConnectionParams.setConnectionTimeout(httpparameters,conntimeout);
+		    HttpConnectionParams.setSoTimeout(httpparameters,socktimeout);
+		    
+			DefaultHttpClient httpclient = new DefaultHttpClient();
+			httpclient.setParams(httpparameters);    	
+        
+        HttpPost httppost = new HttpPost(SERVER+"loginA.php");
+    	
+    	
+    	//HttpPost httppost = new HttpPost(URL);
+    	//String Header = "REG";
+    	 
+    	try {
+    		
+    	
+    	// Add your data
+    	List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+    	//nameValuePairs.add(new BasicNameValuePair("PacketHead",Header ));
+    	nameValuePairs.add(new BasicNameValuePair("username", Usernamevalue.getText().toString()));
+    	nameValuePairs.add(new BasicNameValuePair("password", Passwordvalue.getText().toString()));
+    	nameValuePairs.add(new BasicNameValuePair("gcm_regid", regid));
+    	httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+    	ResponseHandler<String> responseHandler = new BasicResponseHandler();
+    	 
+
+    	//HttpResponse response;
+
+    	
+    	// Execute HTTP Post Request
+    	 iresponse = httpclient.execute(httppost, responseHandler);
+    	 
+
+    	  
+    	 
+    	} catch (ClientProtocolException e) {
+    	// TODO Auto-generated catch block
+		
+    	} catch (IOException e) {
+    	// TODO Auto-generated catch block
+    		pDialog.dismiss();
+			if(ErrorDlg == true)
+			ShowErrorDialoag();
+    	}
+    	
+    	catch (Exception e) {
+        	// TODO Auto-generated catch block
+        		pDialog.dismiss();	
+        		//new MyAsyncTask().cancel(true);
+        		//Toast.makeText(getApplicationContext(), "Network Error!", Toast.LENGTH_LONG).show();
+    	}
+    	
+    	
+
+    	}
+    	 
+    	}*/
+    
+    
+    
+    
+    @SuppressLint("ValidFragment")
+	public class NetworkErrorDialogFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(neterrormsg)
+                   .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                       public void onClick(DialogInterface dialog, int id) {
+                    	   AUTH();
+                       }
+                   })
+                   .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                       public void onClick(DialogInterface dialog, int id) {
+                           // User cancelled the dialog
+                       }
+                   });
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
+    }
+    
+    
+	public void ShowErrorDialoag() {
+	    DialogFragment newFragment = new NetworkErrorDialogFragment();
+	    newFragment.show(getFragmentManager(), "noneterror");
+	}
+    
+	
+    
+    @SuppressLint("ValidFragment")
+	public class NoNetErrorDialogFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(LoginActivity.noneterrormsg)
+                   .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                       public void onClick(DialogInterface dialog, int id) {
+                    	  
+                       }
+                   });
+                  
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
+    }
+    
+    
+	public void ShowNoNetErrorDialoag() {
+	    DialogFragment newFragment = new NetworkErrorDialogFragment();
+	    newFragment.show(getFragmentManager(), "noneterror");
+	}
+	
+	
+
+	
+    
+    
+    /**
+     * Checks if the device has Internet connection.
+     * 
+     * @return <code>true</code> if the phone is connected to the Internet.
+     */
+      public static boolean checkNetworkConnection(Context context)
+      {
+          final ConnectivityManager connMgr = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+          final android.net.NetworkInfo wifi =connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+          final android.net.NetworkInfo mobile =connMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+          if(wifi.isAvailable()||mobile.isAvailable())
+              return true;
+          else
+              return false;
+      }    
+    
+    
+      
+    public void ClosMe() {
+
+    //Intent intent = getIntent();
+    //overridePendingTransition(0, 0);
+    //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    finish();
+}
+    
+}
+
+

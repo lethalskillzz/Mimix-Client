@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Delete resource &apos;GplayservicesLIB&apos;" deleteContents="true" description="Delete resource &apos;GplayservicesLIB&apos;" element1="/GplayservicesLIB" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1405776060503"/>&#x0A;<refactoring comment="Delete resource &apos;Google_play_service_lib&apos;" deleteContents="true" description="Delete resource &apos;Google_play_service_lib&apos;" element1="/Google_play_service_lib" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1405776400973"/>
+</session>

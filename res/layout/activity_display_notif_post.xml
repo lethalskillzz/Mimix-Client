@@ -1,0 +1,112 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+android:background="#eeedf3"
+>
+
+    
+        
+<TableLayout
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+>        
+        
+          
+
+<LinearLayout
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:paddingTop="4dip"
+android:paddingLeft="4dip"
+android:paddingRight="4dip"
+android:layout_marginBottom="15dp"
+android:orientation="horizontal"
+>
+    
+<ImageView
+    android:id="@+id/dispN_row_image"
+    android:layout_width="55dp"
+    android:layout_height="55dp"
+    android:scaleType="fitXY"
+    android:layout_gravity="top|clip_vertical"
+    android:layout_marginRight="4dp" />
+
+
+<LinearLayout
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:paddingRight="4dip"
+android:orientation="vertical"
+>
+
+<TextView android:id="@+id/dispN_row_username"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:textStyle="bold"
+android:singleLine="true"
+android:ellipsize="end"/>
+
+
+   <TextView
+        android:id="@+id/dispN_row_date_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:textColor="#5a5a60"
+        android:textSize="12sp" />    
+
+</LinearLayout>
+</LinearLayout>
+
+
+
+<LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginTop="10dp" >
+
+
+    
+<TextView
+    android:id="@+id/dispN_row_body"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:ellipsize="end"
+    android:textSize="17sp" />
+
+<ImageView
+    android:id="@+id/dispN_row_postimage"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+        android:padding="4dp"
+    android:layout_gravity="center_horizontal" />
+
+
+<RatingBar
+    android:id="@+id/dispN_ratingbar"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="right"
+    android:layout_marginRight="-32dp"
+    android:layout_marginTop="-10dp"
+    android:layout_marginBottom="-10dp"
+    android:isIndicator="true"
+    android:numStars="5"
+    android:scaleX="0.5"
+    android:scaleY="0.5"
+    android:stepSize="0.1"
+     />
+
+
+</LinearLayout>
+
+
+
+
+</TableLayout>
+
+</ScrollView>
+

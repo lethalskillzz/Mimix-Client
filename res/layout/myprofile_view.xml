@@ -1,0 +1,290 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="-4dp" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fadehomebg"
+        android:orientation="vertical"
+        android:padding="4dp"
+        android:paddingBottom="0dp" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="2dp"
+            android:background="#8333"
+            android:orientation="vertical"
+            android:padding="4dp" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <com.android.volley.toolbox.NetworkImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_gravity="top|clip_vertical"
+                    android:layout_marginRight="6dp"
+                    android:clickable="true"
+                    android:onClick="Go_profilepic"
+                    android:scaleType="fitXY" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/profile_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#ffffff"
+                        android:textSize="19sp"
+                        android:textStyle="bold" />
+
+                    
+                      <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="2dp" >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="-12dp"
+                            android:layout_marginRight="-10dp"
+                            android:layout_marginTop="-12dp"
+                            android:scaleType="fitXY"
+                            android:scaleX="0.4"
+                            android:scaleY="0.4"
+                            android:src="@drawable/ic_location" />
+
+                        <TextView
+                            android:id="@+id/profile_location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:textColor="#ffffff"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                    
+ 
+                    
+                    
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="-13dp"
+                        android:orientation="horizontal"
+                        android:padding="2dp" >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="-12dp"
+                            android:layout_marginRight="-10dp"
+                            android:layout_marginTop="-12dp"
+                            android:scaleType="fitXY"
+                            android:scaleX="0.4"
+                            android:scaleY="0.4"
+                            android:src="@drawable/ic_workplace" />
+
+                        <TextView
+                            android:id="@+id/profile_occup_workplace"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:textColor="#ffffff"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                   
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/profile_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:gravity="right"
+                    android:textColor="#26da31"
+                    android:textSize="13sp"
+                    android:textStyle="italic" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="-15dp"
+                android:orientation="horizontal" >
+
+                <RatingBar
+                    android:id="@+id/prof_ratingbar"
+                    style="android:ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="-10dp"
+                    android:layout_marginLeft="-55dp"
+                    android:layout_marginRight="15dp"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:rating="3.5"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    android:stepSize="0.1" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/fadeprofbg"
+            android:orientation="vertical"
+            android:padding="4dp" >
+
+            <LinearLayout
+                android:id="@+id/profile_detail"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Contacts"
+                    android:textColor="#5a5a60"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <View style="@style/Divider" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="-12dp"
+                        android:layout_marginRight="-10dp"
+                        android:layout_marginTop="-12dp"
+                        android:scaleType="fitXY"
+                        android:scaleX="0.4"
+                        android:scaleY="0.4"
+                        android:src="@drawable/ic_prof_mail" />
+
+                    <TextView
+                        android:id="@+id/profile_mail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:autoLink="email"
+                        android:textSize="14sp"
+                        android:textColorLink="#2f6699" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-13dp"
+                    android:orientation="horizontal" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="-12dp"
+                        android:layout_marginLeft="-12dp"
+                        android:layout_marginRight="-10dp"
+                        android:layout_marginTop="-14dp"
+                        android:scaleType="fitXY"
+                        android:scaleX="0.4"
+                        android:scaleY="0.4"
+                        android:src="@drawable/ic_prof_call" />
+
+                    <TextView
+                        android:id="@+id/profile_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:autoLink="phone"
+                        android:textSize="14sp"
+                        android:textColorLink="#2f6699" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="28dp"
+                android:orientation="horizontal"
+                android:padding="0dp" >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp" >
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dip"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="0dip"
+                        android:layout_marginRight="0dip"
+                        android:background="?android:attr/dividerVertical" />
+
+                    <View
+                        android:id="@+id/ViewColorPickerHelper"
+                        android:layout_width="1dip"
+                        android:layout_height="match_parent"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="-4dip"
+                        android:layout_marginTop="0dip"
+                        android:background="?android:attr/dividerVertical" />
+
+                    <Button
+                        android:id="@+id/following_clk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@id/ViewColorPickerHelper"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:onClick="GoContacts2"
+                        android:text="following"
+                        android:textColor="#214264"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/follower_clk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@id/ViewColorPickerHelper"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:onClick="GoContacts1"
+                        android:text="followers"
+                        android:textColor="#214264"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dip"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginLeft="0dip"
+                        android:layout_marginRight="0dip"
+                        android:background="?android:attr/dividerVertical" />
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

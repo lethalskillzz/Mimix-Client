@@ -1,0 +1,143 @@
+package com.lethalsys.mimix;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+public class Acad1Activity extends Activity {
+
+	GridView gridView;
+
+	static final String[] MOBILE_OS = new String[] { "Library", "Quiz" };
+	
+	Gridadapter Adapter;
+
+
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_acad1);
+		
+		Adapter = new Gridadapter(this, MOBILE_OS);
+		
+		gridView = (GridView) findViewById(R.id.gridView);
+
+		gridView.setAdapter(Adapter);
+
+		gridView.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View v,
+					int position, long id) {
+				/*Toast.makeText(
+						getApplicationContext(),
+						((TextView) v.findViewById(R.id.label)).getText(), Toast.LENGTH_SHORT).show();*/
+	      	if(((TextView) v.findViewById(R.id.label)).getText().equals("Quiz"))
+	    	{
+	      		 GoQuiz();
+		    }
+
+			}
+		});
+
+	
+
+	}
+	
+    
+	public void GoQuiz()
+	{
+    	Intent intent = new Intent(this, QuizSelectActivity.class);
+    	//intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+    	startActivity(intent);
+	}
+
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.acad1, menu);
+		return true;
+	}
+
+	
+	
+	
+	    class Gridadapter extends BaseAdapter {
+		private Context context;
+		private final String[] activity;
+
+		public Gridadapter(Context context, String[] activity) {
+			this.context = context;
+			this.activity = activity;
+		}
+
+		public View getView(int position, View convertView, ViewGroup parent) {
+
+			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+			View gridView;
+
+			if (convertView == null) {
+
+				gridView = new View(context);
+
+				gridView = inflater.inflate(R.layout.acad_grid, null);
+
+				TextView textView = (TextView) gridView.findViewById(R.id.label);
+				
+				textView.setText(activity[position]);
+
+				ImageView flag = (ImageView) gridView .findViewById(R.id.flag);
+
+				String mobile = activity[position];
+
+				if (mobile.equals("Quiz")) {
+					flag.setImageResource(R.drawable.ic_quiz);
+				} else if (mobile.equals("Library")) {
+					flag.setImageResource(R.drawable.ic_library);			
+				} /*else {
+					flag.setImageResource(R.drawable.britishflag);
+				}*/
+
+			} else {
+				gridView = (View) convertView;
+			}
+
+			return gridView;
+		}
+
+		@Override
+		public int getCount() {
+			return activity.length;
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return null;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return 0;
+		}
+
+	}
+	
+	
+	
+}
+
+
+
+

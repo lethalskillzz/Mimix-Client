@@ -1,0 +1,563 @@
+package com.lethalsys.mimix;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.CursorAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+@SuppressWarnings("deprecation")
+public class MessageListActivity extends Activity {
+	
+	UseID_Database uidhelper;
+	private String UserID;
+	
+	public final static String MSGUSRNAME = "com.lethalsys.mimix.MESSAGE_USERNAME";
+	
+	private Set<Long> seenmsg=new HashSet<Long>();
+	//private Set<Long> seenmymsg=new HashSet<Long>();
+	
+	String iresponse;
+
+	String username;
+	String msgbody;
+	String mid;
+
+	String cpycontact=null;
+	String READMID=null;
+	
+	JSONArray data = null;
+	
+	public static ConnectivityManager mConnectivityManager;
+	public static NetworkInfo mNetworkInfo;
+	
+	ListView list;
+	
+	Cursor model=null;
+	ContactsDatabase helper=null;
+	ContactDatabaseAdapter adapter =null;
+	
+	public static Handler msglUiHandler = null;
+	
+	Boolean ErrorDlg = true;
+	public static Boolean msgactv = false;
+	 	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_message_list);
+		
+		uidhelper=new UseID_Database(this);		
+	    UserID = uidhelper.getID();
+	   
+		helper=new ContactsDatabase(this);
+		
+		list=(ListView)findViewById(R.id.lvmsg_list);
+		
+		
+		
+		
+		//helper.ClearMsgList();
+		
+		model=helper.getMsgList();
+		startManagingCursor(model);
+		adapter=new ContactDatabaseAdapter(model);
+		list.setAdapter(adapter);
+		list.setOnItemClickListener(onListClick);
+		
+		
+		
+	   /* mConnectivityManager= (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+	    mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+
+	    if (mNetworkInfo != null && mNetworkInfo.isConnectedOrConnecting())
+	    {
+            //helper.ClearMsgList();
+	    	new MyAsyncTask().execute("get_msglist"); 	
+        }
+        else
+        {
+        	Toast.makeText(this, "Network Error: No Internet Connection", Toast.LENGTH_LONG).show();
+        }	*/
+	    
+	    
+		
+        msglUiHandler = new Handler() // Receive messages from service class
+        {
+            public void handleMessage(Message msg)
+            {
+                  switch(msg.what)
+                {
+                      case 0:
+                      {
+
+                      }
+                      break;
+                      
+                      case 1:
+                      {
+                    	  Get_IMList(); 
+                      }
+                      break;
+ 
+                    default:
+                    break;
+                }
+            }
+        };
+	    
+		clearNotification();
+	}
+
+	/*@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.message_list, menu);
+		return true;
+	}*/
+	
+	
+	public void onResume()
+	{
+		super.onResume();
+		ErrorDlg = true;
+		msgactv =  true;
+		Get_IMList();
+		
+	}
+	
+	
+	@Override
+	public void onPause() {
+	super.onPause();
+	ErrorDlg = false;
+	msgactv =  false;
+	}
+	
+	
+	public void Get_IMList()
+	{
+	    mConnectivityManager= (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+	    mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+
+	    if (mNetworkInfo != null && mNetworkInfo.isConnectedOrConnecting())
+	    {
+            //helper.ClearMsgList();
+	    	new MyAsyncTask().execute("get_msglist"); 	
+        }
+        else
+        {
+        	//Toast.makeText(this, "Network Error! No Internet Connection", Toast.LENGTH_LONG).show();
+        	ShowNoNetErrorDialoag();
+        }	
+	}
+	
+	
+	private AdapterView.OnItemClickListener onListClick=new
+			AdapterView.OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent,
+			View view, int position,
+			long id) {
+			model.moveToPosition(position);
+			cpycontact = helper.getMsgListUsername(model);
+			READMID = helper.getMsgListMID(model);
+			//Toast.makeText(getApplicationContext(), READMID, Toast.LENGTH_LONG).show();
+			MSG_READ();
+			helper.updatemsglist(READMID);
+			//ClosMe();
+			Go_Msg(cpycontact);
+			
+			
+		    
+			
+			}
+			};
+			
+			
+			public void MSG_READ()
+			{
+				mConnectivityManager= (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+			    mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+
+			    if (mNetworkInfo != null && mNetworkInfo.isConnectedOrConnecting())
+			    {
+		        
+			    	new MyAsyncTask().execute("msg_read"); 	
+		        }
+		        else
+		        {
+		        	//Toast.makeText(this, "Network Error! No Internet Connection", Toast.LENGTH_LONG).show();
+		        	ShowNoNetErrorDialoag();
+		        }	
+					
+			}
+			
+			
+			
+		    public void Go_Msg(String usr) {
+		    	Intent intent = new Intent(this, MessageActivity.class);
+		    	//intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+		    	intent.putExtra(MSGUSRNAME, usr);
+		    	startActivity(intent);
+		    	}  
+			
+	
+	
+	private class MyAsyncTask extends AsyncTask<String, Integer, Double>{
+		@Override
+		protected Double doInBackground(String... params) {
+		// TODO Auto-generated method stub
+		postData(params[0]);
+		return null;
+		}
+		 
+		protected void onPostExecute(Double result){
+
+			if(null!=iresponse)
+    		{
+	        if(iresponse.trim().length()!=0)
+	        {
+	        	
+	        
+	        try{
+	        	JSONObject jsonObj = new JSONObject(iresponse.trim());
+	        	
+	        	data = jsonObj.getJSONArray("msgs");
+	        	
+	        	if(data!=null)
+    			{
+	        	helper.ClearMsgList();
+	        	seenmsg.clear();
+	        	//seenmymsg.clear();
+    			
+	        	
+	            for(int i=0;i<data.length();i++)
+	            {
+	            	JSONObject c = data.getJSONObject(i);
+	            	
+	            	//String stamp = c.getString("stamp");
+	            	String userid = c.getString("userid");
+	            	String targetid = c.getString("targetid");
+	            	String status = c.getString("status");
+	            	username =  c.getString("username");
+	            	msgbody = c.getString("msgbody");
+	                mid = c.getString("mid");
+	                
+	                if(userid.compareTo(UserID)==0)
+	                {
+	                	if (!seenmsg.contains(Long.parseLong(targetid))) {            		
+	                	seenmsg.add(Long.parseLong(targetid));
+	                	helper.insertMsgList(username,msgbody,"read",mid);
+	                	}
+	                }
+	                
+	                else
+	                {
+	            	
+	            	if (!seenmsg.contains(Long.parseLong(userid))/*||!seenmsg.contains(Long.parseLong(targetid))*/) {
+	            		// found a new one!
+	            		seenmsg.add(Long.parseLong(userid));
+	                
+	            	    helper.insertMsgList(username,msgbody,status,mid);
+	            	} 
+	                }
+	            	
+	                /*if("unread".compareTo(status)==0)
+	                {
+	                	
+	                }*/
+	               //new MyAsyncTask().execute("msg_seen");
+	         
+	            }
+	            model.requery();
+	            	
+    			} 
+	        } catch (JSONException e){
+	        	
+	        }
+
+		
+		
+		
+	        }
+		
+    		}
+			//Toast.makeText(getApplicationContext(),iresponse.trim() , Toast.LENGTH_LONG).show();
+			//confirmFireMissiles();
+
+		
+		}
+		
+		
+		protected void onProgressUpdate(Integer... progress)
+		{
+			
+		}
+		 
+		protected void postData(String Header) {
+		// Create a new HttpClient and Post Header
+			HttpParams httpparameters = new BasicHttpParams();
+		    HttpConnectionParams.setConnectionTimeout(httpparameters,LoginActivity.conntimeout);
+		    HttpConnectionParams.setSoTimeout(httpparameters,LoginActivity.socktimeout);
+		    
+			DefaultHttpClient httpclient = new DefaultHttpClient();
+			httpclient.setParams(httpparameters);
+			
+			HttpPost httppost;
+
+		   httppost = new HttpPost(/*"http://10.0.2.2/Twitter-Engine/*/LoginActivity.SERVER+"imessanger.php");
+		   //httppost = new HttpPost("http://route.pixub.com/imessanger.php");
+		
+		
+		try {
+			
+		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs.add(new BasicNameValuePair("PacketHead",Header ));
+		nameValuePairs.add(new BasicNameValuePair("UID", UserID ));
+		if(Header.compareTo("msg_read")==0)
+		{
+		 nameValuePairs.add(new BasicNameValuePair("READMID", READMID ));
+		}
+		httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+		ResponseHandler<String> responseHandler = new BasicResponseHandler();
+		 
+		
+		// Execute HTTP Post Request
+		 iresponse = httpclient.execute(httppost, responseHandler);
+		 
+
+
+		 
+		} catch (ClientProtocolException e) {
+		// TODO Auto-generated catch block
+    		Toast.makeText(getApplicationContext(), "Network Error!", Toast.LENGTH_LONG).show();
+    		cancel(true);
+		} catch (IOException e) {
+		// TODO Auto-generated catch block
+			if(ErrorDlg == true)
+			ShowErrorDialoag();
+		}
+
+
+		}
+		 
+		}
+
+
+	
+    @SuppressLint("ValidFragment")
+	public class NetworkErrorDialogFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(LoginActivity.neterrormsg)
+                   .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                       public void onClick(DialogInterface dialog, int id) {
+                    	   Get_IMList();
+                       }
+                   })
+                   .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                       public void onClick(DialogInterface dialog, int id) {
+                           // User cancelled the dialog
+                       }
+                   });
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
+    }
+    
+    
+	public void ShowErrorDialoag() {
+	    DialogFragment newFragment = new NetworkErrorDialogFragment();
+	    newFragment.show(getFragmentManager(), "neterror");
+	}
+    
+	
+	
+	
+    @SuppressLint("ValidFragment")
+	public class NoNetErrorDialogFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(LoginActivity.noneterrormsg)
+                   .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                       public void onClick(DialogInterface dialog, int id) {
+                    	  
+                       }
+                   });
+                  
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
+    }
+    
+    
+	public void ShowNoNetErrorDialoag() {
+	    DialogFragment newFragment = new NetworkErrorDialogFragment();
+	    newFragment.show(getFragmentManager(), "noneterror");
+	}
+	
+
+	
+	
+	
+    class ContactDatabaseAdapter extends CursorAdapter {
+
+	ContactDatabaseAdapter(Cursor c) {
+	super(MessageListActivity.this,c);
+	}
+	@Override
+	public void bindView(View row, Context ctxt,Cursor c) {
+    contactDatabaseHolder holder=(contactDatabaseHolder)row.getTag();
+	holder.populateFrom(c, helper);
+	}
+	@Override
+	public View newView(Context ctxt, Cursor c,	ViewGroup parent) {
+	LayoutInflater inflater=getLayoutInflater();
+	View row=inflater.inflate(R.layout.msgrow, parent, false);
+	contactDatabaseHolder holder=new contactDatabaseHolder(row);
+	row.setTag(holder);
+	return(row);
+	}
+
+}    
+
+
+
+
+
+static class contactDatabaseHolder {
+private TextView msguname=null;
+private TextView msgbody=null;
+private ImageView ureadimg=null;
+private ImageView profimg=null;
+private View row=null;
+contactDatabaseHolder(View row) {
+this.row=row;
+
+msguname=(TextView)row.findViewById(R.id.msgrow_username);
+msgbody=(TextView)row.findViewById(R.id.msgrow_body);
+ureadimg=(ImageView)row.findViewById(R.id.msgrow_unread);
+profimg=(ImageView)row.findViewById(R.id.msgrow_profimg);
+
+
+}
+
+
+void populateFrom(Cursor c, ContactsDatabase helper) {
+	msguname.setText(helper.getMsgListUsername(c));
+	msgbody.setText(helper.getMsgListBody(c));
+	profimg.setImageResource(R.drawable.ic_defimg);
+	
+	if(helper.getMsgListStatus(c).equals("unread")) {
+		
+		ureadimg.setImageResource(R.drawable.ic_unread_msg);
+		ureadimg.setVisibility(View.VISIBLE);
+	}
+	
+	
+	else
+	{
+		ureadimg.setVisibility(View.GONE);
+
+	}
+    
+    
+    
+}
+} 
+
+
+
+
+public void confirmFireMissiles() {
+    DialogFragment newFragment = new FireMissilesDialogFragment();
+    newFragment.show(getFragmentManager(), "missiles");
+}
+
+
+@SuppressLint("ValidFragment")
+public class FireMissilesDialogFragment extends DialogFragment {
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        // Use the Builder class for convenient dialog construction
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(iresponse.trim())
+               .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int id) {
+                	  
+                   }
+               });
+               /*.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int id) {
+                       // User cancelled the dialog
+                   }
+               });*/
+        // Create the AlertDialog object and return it
+        return builder.create();
+    }
+}
+
+
+
+private void clearNotification() {
+NotificationManager mgr=
+(NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+mgr.cancel(IM_Monitor.IMNOTIFICATION_ID);
+}
+
+
+public void ClosMe() {
+
+Intent intent = getIntent();
+overridePendingTransition(0, 0);
+intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+finish();
+}
+
+
+}

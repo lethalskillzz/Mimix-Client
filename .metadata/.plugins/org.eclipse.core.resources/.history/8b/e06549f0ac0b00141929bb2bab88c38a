@@ -1,0 +1,203 @@
+package com.lethalsys.mimix;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.util.Base64;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CursorAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+public class CommerceListActivity extends Activity {
+	
+	
+
+	
+	public static ConnectivityManager mConnectivityManager;
+	public static NetworkInfo mNetworkInfo;
+
+	private String UserID;
+	UseID_Database uidhelper;
+	
+	Boolean ErrorDlg = true;
+	
+	Cursor model=null;
+	PostDatabase helper=null;
+	CommerceListAdapter adapter=null;
+
+	 
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_commerce_list);
+		
+		uidhelper=new UseID_Database(this);
+		UserID = uidhelper.getID();	 
+		
+		helper=new PostDatabase(this);
+
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.commerce_list, menu);
+		return true;
+	}
+
+
+
+
+
+
+@SuppressLint("ValidFragment")
+public class NetworkErrorDialogFragment extends DialogFragment {
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        // Use the Builder class for convenient dialog construction
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(LoginActivity.neterrormsg)
+               .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int id) {
+                	  // rload();
+                   }
+               })
+               .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int id) {
+                       // User cancelled the dialog
+                   }
+               });
+        // Create the AlertDialog object and return it
+        return builder.create();
+    }
+}
+
+
+public void ShowErrorDialoag() {
+    DialogFragment newFragment = new NetworkErrorDialogFragment();
+    newFragment.show(getFragmentManager(), "neterror");
+}
+
+
+
+@SuppressLint("ValidFragment")
+public class NoNetErrorDialogFragment extends DialogFragment {
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        // Use the Builder class for convenient dialog construction
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(LoginActivity.noneterrormsg)
+               .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int id) {
+                	  
+                   }
+               });
+              
+        // Create the AlertDialog object and return it
+        return builder.create();
+    }
+}
+
+
+public void ShowNoNetErrorDialoag() {
+    DialogFragment newFragment = new NetworkErrorDialogFragment();
+    newFragment.show(getFragmentManager(), "noneterror");
+}
+
+
+
+
+
+
+class CommerceListAdapter extends CursorAdapter {
+
+@SuppressWarnings("deprecation")
+CommerceListAdapter(Cursor c) {
+super(CommerceListActivity.this,c);
+}
+@Override
+public void bindView(View row, Context ctxt,Cursor c) {
+CommerceListHolder holder=(CommerceListHolder)row.getTag();
+holder.populateFrom(c, helper);
+}
+@Override
+public View newView(Context ctxt, Cursor c,	ViewGroup parent) {
+LayoutInflater inflater=getLayoutInflater();
+View row=inflater.inflate(R.layout.comm_row, parent, false);
+CommerceListHolder holder=new CommerceListHolder(row);
+row.setTag(holder);
+return(row);
+}
+
+}    
+
+
+
+
+
+static class CommerceListHolder {
+private ImageView commimg=null;
+private TextView commdate=null;
+private TextView commtitle=null;
+private TextView commuser=null;
+private TextView commprice=null;
+private View row=null;
+CommerceListHolder(View row) {
+this.row=row;
+
+commdate=(TextView)row.findViewById(R.id.commrow_date);
+commimg=(ImageView)row.findViewById(R.id.commrow_img);
+commtitle=(TextView)row.findViewById(R.id.commrow_title);
+commuser=(TextView)row.findViewById(R.id.commrow_user);
+commprice=(TextView)row.findViewById(R.id.commrow_price);
+
+}
+
+
+void populateFrom(Cursor c, PostDatabase helper) {
+	commdate.setText(helper.getCommDate(c));
+	commtitle.setText(helper.getCommTitle(c));
+	commuser.setText(helper.getCommUser(c));
+	commprice.setText(helper.getCommPrice(c));
+	
+int flag = 0;
+byte[] imgdata = Base64.decode(helper.getCommImg(c), flag);
+
+if(imgdata.length!=0)
+{
+	commimg.setImageBitmap(BitmapFactory.decodeByteArray(imgdata, 0, imgdata.length));
+}
+else
+{
+	commimg.setImageResource(R.drawable.me);
+}
+
+
+
+
+
+
+}
+} 
+
+
+
+
+
+
+}

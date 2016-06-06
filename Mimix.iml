@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="android" name="Android">
+      <configuration />
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="emojimap" level="project" />
+    <orderEntry type="library" name="actionbarsherlock" level="project" />
+    <orderEntry type="library" name="android-support-v4" level="project" />
+    <orderEntry type="library" name="enhanced-volley-master" level="project" />
+    <orderEntry type="library" name="staggeredgrid" level="project" />
+    <orderEntry type="library" name="libs2" level="project" />
+    <orderEntry type="library" name="library" level="project" />
+    <orderEntry type="library" name="google-play-services" level="project" />
+    <orderEntry type="library" name="libs" level="project" />
+    <orderEntry type="library" name="libs1" level="project" />
+    <orderEntry type="library" name="emojicon" level="project" />
+    <orderEntry type="library" name="loadmorelistview" level="project" />
+    <orderEntry type="library" name="cropper" level="project" />
+    <orderEntry type="module" module-name="MixMart_Addon" />
+    <orderEntry type="module" module-name="LoadMoreListView" />
+    <orderEntry type="module" module-name="Cropper" />
+    <orderEntry type="module" module-name="EmojiMap" />
+    <orderEntry type="module" module-name="hotmix_addon" />
+    <orderEntry type="module" module-name="enhanced-volley-master" />
+    <orderEntry type="module" module-name="library" />
+    <orderEntry type="module" module-name="actionbarsherlock" />
+    <orderEntry type="module" module-name="StaggeredGrid" />
+    <orderEntry type="module" module-name="Emojicon" />
+    <orderEntry type="module" module-name="FacebookSDK" />
+    <orderEntry type="module" module-name="google-play-services_lib" />
+  </component>
+</module>

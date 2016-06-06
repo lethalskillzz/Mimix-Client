@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item android:id="@+id/PM_contact"
+    android:title="Message contact"/>
+    
+    <item android:id="@+id/View_contact"
+    android:title="View contact"/>
+    
+     <item android:id="@+id/Dlt_contact"
+    android:title="Delete contact"/>
+     
+     <item android:id="@+id/Add_contact"
+    android:title="Add new contact"/>
+
+</menu>

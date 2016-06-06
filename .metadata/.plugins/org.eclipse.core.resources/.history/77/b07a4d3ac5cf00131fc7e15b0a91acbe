@@ -1,0 +1,46 @@
+           <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+             android:background="@drawable/xml_background"  >
+            
+           <EditText
+               android:id="@+id/post_edttxt"
+               android:layout_width="180dp"
+               android:layout_height="90dp"
+               android:layout_margin="5dp"
+               android:layout_marginTop="5dp"
+               android:background="@drawable/custom_edt"
+               android:hint="write post!"
+               android:maxLength="140"
+               android:textColor="#000000" />
+ 
+     <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+                  
+        <ImageView
+            android:id="@+id/post_img"
+            android:layout_width="50px"
+            android:layout_height="75px"
+            android:clickable="true"
+            android:onClick="get_img"
+            android:src="@drawable/ic_mee" />
+ 
+            <Button
+                android:id="@+id/Post_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/xml_blue_button"
+                android:text="Post"
+                android:textColor="#ffffff" />
+    
+   </LinearLayout>      
+
+    
+    
+
+    
+</LinearLayout>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="@android:style/Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+    <style name="LoginFormContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">16dp</item>
+    </style>
+    
+    <style name="Divider">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">1dp</item>
+    <item name="android:background">?android:attr/listDivider</item>
+</style>
+
+<style name="ThinDivider">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">0.5dp</item>
+    <item name="android:background">?android:attr/listDivider</item>
+</style>
+
+        
+  <style name="MainMenuDivider">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">2dp</item>
+    <item name="android:background">#4c515c</item>
+    
+</style>
+        
+  <style name="ThinMainMenuDivider">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">0.5dp</item>
+    <item name="android:background">#4c515c</item>
+    
+</style>
+
+  
+    <style name="ThinVerticalDivider">
+    <item name="android:layout_height">match_parent</item>
+    <item name="android:layout_width">0.5dp</item>
+    <item name="android:background">#4c515c</item>
+    
+</style>
+  
+
+
+ 
+  
+    <style name="ThemeWithCorners" parent="android:Theme.Holo.Light.Dialog.NoActionBar">
+        <item name="android:windowBackground">@drawable/theme_corners</item>
+    </style>
+
+
+        <style name="ThemeWithBlueCorners" parent="android:Theme.Holo.Light.Dialog.NoActionBar">
+        <item name="android:windowBackground">@drawable/theme_tint_corners</item>
+    </style>
+    
+   
+        <style name="ThemeNoAction" parent="android:Theme.Holo.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/theme_noaction</item>
+    </style>
+    
+       <style name="MyWindowTitleBackground">
+       <item name="android:background">#444444</item>
+   </style>
+
+    <style name="MyTheme" parent="android:Theme">
+    <item name="android:windowTitleBackgroundStyle">@style/MyWindowTitleBackground</item>
+  </style>
+        
+        
+    
+    <style name="New_Theme">&lt;style name=&quot;myTheme&quot;  parent=&quot;android:Theme.Holo&quot;&gt;
+&lt;item name=&quot;editTextStyle&quot;&gt;@style/MyWidget.EditText&lt;/item&gt;
+&lt;/style&gt;
+&lt;style name=&quot;MyWidget.EditText&quot; parent=&quot;android:Widget.EditText&quot;&gt;
+        &lt;item name=&quot;android:background&quot;&gt;@drawable/edit_text&lt;/item&gt;
+&lt;/style&gt;</style>
+
+
+</resources>

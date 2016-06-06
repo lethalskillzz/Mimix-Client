@@ -1,0 +1,364 @@
+package com.lethalsys.mimix;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Base64;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.lethalsys.mimix.MyProfileActivity.ProfileAdapter;
+
+public class ProfilePicActivity extends Activity {
+
+	
+	String iresponse;
+	String UsrNAME;
+
+
+    String UserID;
+	byte[] imgdata = null;
+	String imgfile;
+
+	// number of images to select
+	private static final int PICK_IMAGE = 1;
+	
+	private ProgressDialog pDialog;
+
+	UseID_Database uidhelper;
+	ProfileAdapter adapter=null;
+
+	JSONArray data = null;
+
+	public static ConnectivityManager mConnectivityManager;
+	public static NetworkInfo mNetworkInfo;
+
+	private ImageView profpic=null;
+	//private Bitmap bitmap;
+	
+	Boolean ErrorDlg = true;
+	 
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_profile_pic);
+
+		uidhelper=new UseID_Database(this);
+		UserID = uidhelper.getID();	   
+		
+		Intent intent = getIntent();
+		UsrNAME = intent.getStringExtra(ProfileActivity.PPUsrNAME);
+		
+		setTitle(UsrNAME);
+
+		profpic=(ImageView)findViewById(R.id.disp_profpic);
+		
+		Getprofpic();
+	}
+
+	
+	public void onResume()
+	{
+		super.onResume();
+		ErrorDlg = true;
+	}
+	
+	@Override
+	public void onPause() {
+	super.onPause();
+	ErrorDlg = false;
+	}
+	
+	public void Getprofpic()
+	{
+	    mConnectivityManager= (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+	    mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+
+	    if (mNetworkInfo != null && mNetworkInfo.isConnectedOrConnecting())
+	    {
+        
+	    	new MyAsyncTask().execute("getprofpic");
+        }
+        else
+        {
+        	//Toast.makeText(this, "Network Error! No Internet Connection", Toast.LENGTH_LONG).show();
+        	ShowNoNetErrorDialoag();
+        }
+	}
+	
+	
+	/*@O
+	 *verride
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.profile_pic, menu);
+		return true;
+	}*/
+	
+	
+
+	public void confirmFireMissiles() {
+		DialogFragment newFragment = new FireMissilesDialogFragment();
+		newFragment.show(getFragmentManager(), "missiles");
+	}
+
+
+	@SuppressLint("ValidFragment")
+	public class FireMissilesDialogFragment extends DialogFragment {
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			// Use the Builder class for convenient dialog construction
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			builder.setMessage(iresponse.trim())
+			.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					// FIRE ZE MISSILES!
+				}
+			});
+			/*.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                       public void onClick(DialogInterface dialog, int id) {
+                           // User cancelled the dialog
+                       }
+                   });*/
+			// Create the AlertDialog object and return it
+			return builder.create();
+		}
+	}
+
+
+
+
+	
+	
+	
+	
+
+    	
+	
+	
+	
+	
+	
+	
+
+
+	private class MyAsyncTask extends AsyncTask<String, Integer, Double>{
+
+		@Override
+		protected Double doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			postData(params[0]);
+			return null;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+
+			pDialog = new ProgressDialog(ProfilePicActivity.this);
+			pDialog.setMessage("loading...");
+			pDialog.setIndeterminate(false);
+			pDialog.setCancelable(true);
+			pDialog.show();
+		}
+
+
+		protected void onPostExecute(Double result){
+
+			if(null!=iresponse)
+    		{
+			if(iresponse.trim().length()!=0)
+			{
+
+
+				try{
+
+
+					JSONObject jsonObj = new JSONObject(iresponse.trim());               	
+					data = jsonObj.getJSONArray("data");
+
+					if(data!=null)
+					{
+
+						JSONObject d = data.getJSONObject(0);
+						String img  = d.getString("img");
+						
+                    	int flag = 0;
+                    	byte[] imgdata = Base64.decode(img, flag);
+                    	
+                    	if(imgdata.length!=0)
+                    	{
+                    		profpic.setImageBitmap(BitmapFactory.decodeByteArray(imgdata, 0, imgdata.length));	
+                    	}
+                    	else
+                    	{
+                    		profpic.setImageResource(R.drawable.me);
+                    	}
+                    	
+                    	
+						 
+					}
+				
+				
+						
+
+					
+				} catch (JSONException e){
+
+				} 
+
+				data = null;
+				pDialog.dismiss(); 
+			}
+
+
+    		}
+
+			//Toast.makeText(getApplicationContext(),iresponse.trim() , Toast.LENGTH_LONG).show();
+			//confirmFireMissiles();
+
+
+		}
+
+
+		protected void onProgressUpdate(Integer... progress){
+			//pb.setProgress(progress[0]);
+		}
+
+		protected void postData(String Header) {
+			// Create a new HttpClient and Post Header
+			HttpParams httpparameters = new BasicHttpParams();
+		    HttpConnectionParams.setConnectionTimeout(httpparameters,LoginActivity.conntimeout);
+		    HttpConnectionParams.setSoTimeout(httpparameters,LoginActivity.socktimeout);
+		    
+			DefaultHttpClient httpclient = new DefaultHttpClient();
+			httpclient.setParams(httpparameters);
+
+			HttpPost httppost = new HttpPost(LoginActivity.SERVER+"profile_detail.php");
+
+			try {
+				// Add your data
+
+				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+				nameValuePairs.add(new BasicNameValuePair("PacketHead",Header ));
+				nameValuePairs.add(new BasicNameValuePair("UNAME", UsrNAME ));
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				ResponseHandler<String> responseHandler = new BasicResponseHandler();
+ 
+
+				// Execute HTTP Post Request
+				iresponse = httpclient.execute(httppost, responseHandler);
+
+
+
+
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				Toast.makeText(getApplicationContext(), "Network Error!", Toast.LENGTH_LONG).show();
+				pDialog.dismiss();
+				cancel(true);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+	    		pDialog.dismiss();
+				if(ErrorDlg == true)
+				ShowErrorDialoag();
+			}
+			
+			
+
+		}
+
+	}
+
+	
+	
+    @SuppressLint("ValidFragment")
+	public class NetworkErrorDialogFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(LoginActivity.neterrormsg)
+                   .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                       public void onClick(DialogInterface dialog, int id) {
+                    	   Getprofpic();
+                       }
+                   })
+                   .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                       public void onClick(DialogInterface dialog, int id) {
+                           // User cancelled the dialog
+                       }
+                   });
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
+    }
+    
+    
+	public void ShowErrorDialoag() {
+	    DialogFragment newFragment = new NetworkErrorDialogFragment();
+	    newFragment.show(getFragmentManager(), "neterror");
+	}
+    
+	
+	
+	
+    @SuppressLint("ValidFragment")
+	public class NoNetErrorDialogFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(LoginActivity.noneterrormsg)
+                   .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                       public void onClick(DialogInterface dialog, int id) {
+                    	  
+                       }
+                   });
+                  
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
+    }
+    
+    
+	public void ShowNoNetErrorDialoag() {
+	    DialogFragment newFragment = new NetworkErrorDialogFragment();
+	    newFragment.show(getFragmentManager(), "noneterror");
+	}
+	
+
+	
+
+}

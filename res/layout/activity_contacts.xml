@@ -1,0 +1,31 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:background="@drawable/metro"
+android:gravity="center_horizontal">
+
+     
+   <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fadehomebg"
+    android:orientation="vertical"
+    android:padding="4dp"
+     >
+  
+ 
+
+<com.costum.android.widget.LoadMoreListView
+android:id="@+id/show_contacts"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:background="#eeedf3"
+android:layout_margin="4dp"        
+/>
+    
+     
+</LinearLayout> 
+
+</LinearLayout> 

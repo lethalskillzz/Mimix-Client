@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal"
+android:padding="4px"
+android:descendantFocusability="blocksDescendants"
+>
+
+<ImageView
+    android:id="@+id/commrow_img"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_gravity="top|clip_vertical"
+    android:layout_marginRight="4px" />
+
+<LinearLayout
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:padding="4px"
+android:orientation="vertical"
+>
+
+    <TextView
+    android:id="@+id/commrow_date"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="right"
+    android:ellipsize="end"
+    android:singleLine="true"
+    android:textColor="#a9a5a5"
+    android:textSize="9sp" />
+
+    <TextView
+        android:id="@+id/commrow_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:autoLink="web"
+        android:ellipsize="end"
+        android:textSize="14sp"
+        />
+
+<TextView
+    android:id="@+id/commrow_user"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:ellipsize="end"
+    android:singleLine="true"
+    android:textStyle="italic"
+    android:textSize="12sp"  />
+
+ <TextView
+    android:id="@+id/commrow_price"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="right"
+    android:ellipsize="end"
+    android:singleLine="true"
+    android:textColor="#f0173a"
+    android:textSize="15sp"
+    android:textStyle="bold" />
+
+</LinearLayout>
+</LinearLayout>

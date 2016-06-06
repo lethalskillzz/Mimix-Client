@@ -1,0 +1,1042 @@
+package com.lethalsys.mimix;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.apache.commons.io.IOUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.ProgressDialog;
+import android.app.TabActivity;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.SystemClock;
+import android.util.Base64;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.CursorAdapter;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TabHost;
+import android.widget.TabHost.TabSpec;
+import android.widget.TextView;
+import android.widget.Toast;
+
+
+
+
+@SuppressWarnings("deprecation")
+public class HomeActivity extends TabActivity{
+	
+	//public final static String EXTRA_MESSAGE2 = "com.lethalsys.mimix.MESSAGE2";
+	public final static String USR_DETAIL = "com.lethalsys.mimix.U_DETAIL";
+	public final static String GETALL_MESSAGE = "com.lethalsys.mimix.GETALL_MSG";
+	
+	
+	public final static String Disp_Uname = "com.lethalsys.mimix.Disp_Uname";
+	public final static String Disp_Pbody = "com.lethalsys.mimix.Disp_Pbody";
+	public final static String Disp_Tstamp = "com.lethalsys.mimix.Disp_Tstamp";
+	public static byte[] Disp_Pimage = null; //"com.lethalsys.mimix.Disp_Pimage";
+	
+	public static final int NOTIFICATION_ID=1337;
+	public static Handler mUiHandler = null;
+	
+	private String iresponse;
+	private String Presponse;
+	private String[] Data1;
+	private String[] Data2;
+	private String[] Data3;
+	private String UserID;
+	
+	
+	private EditText Postvalue;
+	private String PostBody;
+	
+	private ProgressDialog pDialog;
+	private ProgressBar pBar;
+	
+	ListView list;
+	
+	UseID_Database uidhelper=null;
+    
+	Cursor model=null;
+	PostDatabaseAdapter adapter =null;
+	PostDatabase helper=null;
+
+	public static ConnectivityManager mConnectivityManager;
+	public static NetworkInfo mNetworkInfo;
+	
+	JSONArray data = null;
+	
+	engine r;
+	String URL;
+	
+	String duname;
+	String dbody;
+	String dstamp;
+
+	AtomicBoolean isActive=new AtomicBoolean(true);
+	int progress=0;	
+	
+	String im_tabslct;
+	
+	
+	InputStream response; 
+	
+	
+	 
+	@Override
+	
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_PROGRESS);
+		setContentView(R.layout.activity_home);
+		//pBar = (ProgressBar) findViewById(R.id.progressbar); 
+		
+		uidhelper=new UseID_Database(this);
+		UserID = uidhelper.getID();
+		
+		setTitle(uidhelper.getUSER());
+		
+	    getActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		helper=new PostDatabase(this);
+		//r = new engine();
+  
+		
+		//URL = SERVER.concat("add_get_post.php");
+		//Toast.makeText(getApplicationContext(),URL , Toast.LENGTH_LONG).show();
+		
+		Postvalue=(EditText)findViewById(R.id.post_edt);
+		list=(ListView)findViewById(R.id.show_posts);
+        
+		//helper.Clear();
+		
+		
+		model=helper.getAll();
+		startManagingCursor(model);
+		adapter=new PostDatabaseAdapter(model);
+		list.setAdapter(adapter);
+		
+		list.setOnItemClickListener(onPostClick);
+		
+		
+		
+		
+		/*Intent intent = getIntent();
+	    UserID = intent.getStringExtra(LoginActivity.EXTRA_MESSAGE);*/
+		
+
+	    
+	    Intent intentContacts = new Intent().setClass(this, AllContactsActivity.class)
+	    		                            .putExtra(GETALL_MESSAGE, "not empty");
+	    		                            
+	    
+	    Intent intentMsgs  = new Intent().setClass(this, MessageListActivity.class);                       	
+                //.putExtra(GETALL_MESSAGE, "not empty");
+	    
+	    Resources resources = getResources();
+		Drawable tabIcon;
+		
+		    TabHost host = getTabHost();
+	        tabIcon = resources.getDrawable(R.drawable.ic_posts);
+	        TabSpec tab1Spec = host.newTabSpec("Tab One")
+	                               .setIndicator("", tabIcon)
+	                               .setContent(R.id.show_posts);
+	        host.addTab(tab1Spec);
+	        
+	        tabIcon = resources.getDrawable(R.drawable.posts);
+	        TabSpec tab2Spec = host.newTabSpec("Tab Two")
+	                               .setIndicator("", tabIcon)
+	                               .setContent(intentContacts);
+	        host.addTab(tab2Spec);
+	        
+	        tabIcon = resources.getDrawable(R.drawable.ic_messagelist);
+	        TabSpec tab3Spec = host.newTabSpec("Tab Three")
+	                               .setIndicator("", tabIcon)
+	                               .setContent(intentMsgs);                               
+	        host.addTab(tab3Spec);
+	        
+	        
+
+
+    	    mConnectivityManager= (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+    	    mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+    	    
+    	    if (mNetworkInfo != null && mNetworkInfo.isConnectedOrConnecting())
+    	    {
+            
+    	    	new MyAsyncTask().execute("get_post");
+            }
+            else
+            {
+            	Toast.makeText(this, "Network Error! No Internet Connection", Toast.LENGTH_LONG).show();
+            }
+	        
+	        
+	     
+	        
+	        //stopService(new Intent(this, PostMonitor.class));
+	        //startService(new Intent(this, PostMonitor.class));   
+	        
+	        stopService(new Intent(this, IM_Monitor.class));
+	        startService(new Intent(this, IM_Monitor.class));   
+	        
+	        
+	        
+			//Intent IMintent = getIntent();
+			im_tabslct = IM_Monitor.im_monitor; //IMintent.getStringExtra(IM_Monitor.im_monitor);
+			
+			if(im_tabslct.length()!=0)
+			{
+			if(im_tabslct.compareTo("im_m")==0)
+			{
+				host.setCurrentTab(2);
+			}
+			}
+	        
+	        
+	        mUiHandler = new Handler() // Receive messages from service class
+	        {
+	            public void handleMessage(Message msg)
+	            {
+	                  switch(msg.what)
+	                {
+	                      case 0:
+	                      {
+	                    	 model.requery();
+	                    	  //Toast.makeText(getApplicationContext(), "msg rcvd", Toast.LENGTH_LONG).show();
+	                      }
+	                      break;
+	                      
+	                      case 1:
+	                      {
+	                          if(checkNetworkConnection(HomeActivity.this)==false)
+	                          {
+	                          	Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+	                          }
+	                          else
+	                    	  
+	                     	// helper.Clear();
+	                   
+	                    	 new MyAsyncTask().execute("get_post");
+	                          
+	                      }
+	                      break;
+	 
+	                    default:
+	                    break;
+	                }
+	            }
+	        };
+	        
+	        
+ 
+	}
+	
+	
+	
+	
+	
+	private AdapterView.OnItemClickListener onPostClick=new
+			AdapterView.OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent,
+			View view, int position,
+			long id) {
+			model.moveToPosition(position);
+			duname = helper.getName(model);
+			dbody = helper.getBody(model);
+			dstamp = helper.getDate(model);
+			
+		    byte[] imgdata = helper.getBmp(model);
+		    
+		    if(imgdata!=null)
+		    {
+			Disp_Pimage = imgdata;
+		    }
+		    
+			Go_Display(duname,dbody,dstamp);
+			//Toast.makeText(getApplicationContext(),"clvkd" , Toast.LENGTH_LONG).show();
+			
+			}
+			};
+			
+			
+			
+			
+			public void Go_Display(String uname, String body, String stamp)
+			{
+		    	Intent intent = new Intent(this, DisplayPostActivity.class);
+		    	//intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+		    	intent.putExtra(Disp_Uname, uname);
+		    	intent.putExtra(Disp_Pbody, body);
+		    	intent.putExtra(Disp_Tstamp, stamp);
+		    	startActivity(intent);
+			}
+		
+	
+	
+	
+	
+	
+	private void showNotification() {
+		final NotificationManager mgr=
+		(NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+		Notification note=new Notification(R.drawable.ic_notification,
+		"New post!",
+		System.currentTimeMillis());
+		Intent i=new Intent(this, HomeActivity.class);
+		i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|
+		Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		PendingIntent pi=PendingIntent.getActivity(this, 0,
+		i,
+		0);
+		note.setLatestEventInfo(this, "Notification!",
+		"New posts",
+		pi);
+		mgr.notify(NOTIFICATION_ID, note);
+		}
+
+	
+	
+	
+	
+	public void confirmFireMissiles() {
+	    DialogFragment newFragment = new FireMissilesDialogFragment();
+	    newFragment.show(getFragmentManager(), "missiles");
+	}
+	
+    private void Post_Alert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+        LayoutInflater inflater = getLayoutInflater();
+        builder.setView(inflater.inflate(R.layout.dialog_post, null))
+                  .setPositiveButton("Post", new DialogInterface.OnClickListener() {
+              @Override
+              public void onClick(DialogInterface dialog, int id) {
+                  // ...
+      	        //new MyAPOsTTask().execute();
+            	  PostBody = Postvalue.getText().toString();
+            	  new MyAsyncTask().execute("add_post");
+
+            	  
+              }
+                  })
+                  
+               .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+              public void onClick(DialogInterface dialog, int id) {
+                  //LoginDialogFragment.this.getDialog().cancel();
+              }
+          });     
+
+     
+       /* alertDialogBuilder.setTitle(this.getTitle()+ " decision");
+        alertDialogBuilder.setMessage("Are you sure?");
+        // set positive button: Yes message
+        alertDialogBuilder.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+               public void onClick(DialogInterface dialog,int id) {
+                   // go to a new activity of the app
+                  
+               }
+             });
+        // set negative button: No message
+        alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+               public void onClick(DialogInterface dialog,int id) {
+                   // cancel the alert box and put a Toast to the user
+                   dialog.cancel();
+                   Toast.makeText(getApplicationContext(), "You chose a negative answer",
+                           Toast.LENGTH_LONG).show();
+               }
+           });
+        // set neutral button: Exit the app message
+        alertDialogBuilder.setNeutralButton("Exit the app",new DialogInterface.OnClickListener() {
+               public void onClick(DialogInterface dialog,int id) {
+                   // exit the app and go to the HOME
+               	HomeActivity.this.finish();
+               }
+           });*/
+         
+       AlertDialog alertDialog = builder.create();
+        // show alert
+        alertDialog.show();
+        
+   }
+	
+	
+	
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    // Inflate the menu items for use in the action bar
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.main, menu);
+	    return super.onCreateOptionsMenu(menu);	
+	}
+	
+	
+
+	
+	
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+    
+            case android.R.id.home:
+            	Intent MyProfintent = new Intent(this, MyProfileActivity.class);
+            	startActivity(MyProfintent);  
+            	return true;
+            	
+            case R.id.action_write_post:
+            	Intent Postintent = new Intent(this, PostActivity.class);//.putExtra(EXTRA_MESSAGE2, UserID);
+            	startActivity(Postintent);
+            	//Post_Alert();
+            	return true;
+            	
+      
+                 
+            case R.id.Log_Awt:
+            	uidhelper.Clear();
+            	helper.Clear();
+            	helper.ClearMsg();
+            	 
+            	//uidhelper.insert("x", "x", "x");
+    	        //stopService(new Intent(this, PostMonitor.class));
+    	        stopService(new Intent(this, IM_Monitor.class));
+
+            	Intent awtintent = new Intent(this, LoginActivity.class);
+            	startActivity(awtintent);
+            	ClosMe();
+            	 return true;
+            			 
+            case R.id.post_ref:
+            {
+            	
+        	    mConnectivityManager= (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        	    mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+
+        	    if (mNetworkInfo != null && mNetworkInfo.isConnectedOrConnecting())
+        	    {
+                
+        	    	helper.Clear();
+        	    	new MyAsyncTask().execute("get_post");
+        	    	
+                }
+                else
+                {
+                	Toast.makeText(this, "Network Error: No Internet Connection", Toast.LENGTH_LONG).show();
+                }
+            	
+           
+            }
+            	 return true;
+                
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    } 
+
+	
+	
+    public void Go_Profile(String usr) {
+    	Intent intent = new Intent(this, ProfileActivity.class);
+    	intent.putExtra(USR_DETAIL, usr);
+    	startActivity(intent);
+    	}  
+    
+    
+ 
+    
+    
+    
+    
+    private class MyAsyncTask extends AsyncTask<String, Integer, Double>{
+   	 
+    	@Override
+    	protected Double doInBackground(String... params) {
+    	// TODO Auto-generated method stub
+    	postData(params[0]);
+    	  	
+    	return null;
+    	}
+    	 
+    	
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			
+		
+                   /*pDialog = new ProgressDialog(HomeActivity.this);
+        			pDialog.setMessage("loading posts...");
+        			pDialog.setIndeterminate(false);
+        			pDialog.setCancelable(true);
+        			pDialog.show();*/
+			
+			        //setProgressBarVisibility(true);
+			       //pBar.setMax(100);
+			       startWork();
+			
+        }
+    	
+    	
+    	protected void onPostExecute(Double result){
+    		
+            if(iresponse.trim().length()!=0)
+            {
+            	/*if("Post added".compareTo(iresponse.trim())==0)
+            	{
+            		Toast.makeText(getApplicationContext(),iresponse.trim() , Toast.LENGTH_LONG).show();
+            	}
+            	
+            	else if("Error: Unable to add post".compareTo(iresponse.trim())==0)
+            	{
+            		Toast.makeText(getApplicationContext(),iresponse.trim() , Toast.LENGTH_LONG).show();
+            	}
+            	else*/
+            
+            try{
+            	JSONObject jsonObj = new JSONObject(iresponse.trim());
+            	
+            	data = jsonObj.getJSONArray("posts");
+            	
+            	if(data!=null)
+    			{
+            		
+            		helper.Clear();
+    			
+            	
+                for(int i=0;i<data.length();i++)
+                {
+                	JSONObject c = data.getJSONObject(i);
+                	String usrname = c.getString("username");
+                	String stamp = c.getString("stamp");
+                	String userid = c.getString("userid");
+                	String body = c.getString("body");
+                	String pimg = c.getString("pimg");
+                	String pid = c.getString("pid");
+                	String IMG = c.getString("IMG");
+             	
+                    	
+                     	if(IMG.compareTo("NO")==0)
+                    	{
+                    	
+                		helper.insert(usrname,body,null,stamp,"NO");            			
+                	    } 
+                    	else
+                    	{
+                        	int flag = 0;
+                        	byte[] imgdata = Base64.decode(pimg, flag);
+                    		
+                    		helper.insert(usrname,body,imgdata,stamp,"YES");
+                    		
+                    	}
+                   	
+                
+                }
+                model.requery();
+                
+    			}
+            } catch (JSONException e){
+            	
+            }
+    		/*Data1  = iresponse.trim().split("<1>");
+    		Data2  = Data1[1].split("<3>");
+ 
+    		
+    		
+    		//helper.Clear();
+    		
+    	
+    	for(int i=0;i < Data2.length; i++)
+    	{
+    		Data3  = Data2[i].split("<2>");
+    		helper.insert(Data3[0],Data3[1],Data3[2]);
+    		model.requery();
+    	}*/
+    	
+    	//showNotification();
+            	//pDialog.dismiss();
+            	
+    	
+            }
+    	
+    	
+    		//Toast.makeText(getApplicationContext(),iresponse.trim() , Toast.LENGTH_LONG).show();
+    		//confirmFireMissiles();
+            //pBar.setMax(0);
+            isActive.set(false);
+         
+    	
+    	}
+    	
+    	
+    	protected void onProgressUpdate(Integer... progress){
+    	    //pb.setProgress(progress[0]);
+    		//pBar.setProgress(5);
+    		
+    		//setProgress(200);
+    		
+    		
+    		
+    	}
+    	 
+    	protected void postData(String Header) {
+    	/*// Create a new HttpClient and Post Header
+    	HttpClient httpclient = new DefaultHttpClient();
+    	
+    	HttpPost httppost = new HttpPost("http://10.0.2.2/Twitter-Engine/add_get_post.php");
+    	//HttpPost httppost = new HttpPost("http://route.pixub.com/add_get_post.php");
+  	
+    	//String Header = "get_post";
+    	 
+    	try {
+    	// Add your data
+    
+            MultipartEntity entity = new MultipartEntity(
+                    HttpMultipartMode.BROWSER_COMPATIBLE);
+                    
+                    entity.addPart("PacketHead", new StringBody(Header));
+                    entity.addPart("UID", new StringBody(UserID));
+                   // entity.addPart("post_body", new StringBody(PostBody));		
+    		
+    	List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+    	nameValuePairs.add(new BasicNameValuePair("PacketHead",Header ));
+    	nameValuePairs.add(new BasicNameValuePair("UID", UserID ));
+    	nameValuePairs.add(new BasicNameValuePair("post_body", PostBody));
+    	httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        
+        httppost.setEntity(entity);           	
+                   	
+    	ResponseHandler<String> responseHandler = new BasicResponseHandler();
+    	 
+
+    	//HttpResponse response;
+
+    	
+    	// Execute HTTP Post Request
+    	 iresponse = httpclient.execute(httppost, responseHandler);
+    	 
+
+
+    	 
+    	} catch (ClientProtocolException e) {
+    	// TODO Auto-generated catch block
+    		Toast.makeText(getApplicationContext(), "Network Error!", Toast.LENGTH_LONG).show();
+    		pDialog.dismiss();
+    		cancel(true);
+    	} catch (IOException e) {
+    	// TODO Auto-generated catch block
+    	}*/
+    		
+    		String url = /*"http://10.0.2.2/Twitter-Engine/*/LoginActivity.SERVER+"add_get_post.php"; 
+    		//String url = "http://route.pixub.com/add_get_post.php";
+    		String query=null;
+
+    		try {
+				     query = String.format("PacketHead=%s&UID=%s", 
+				     URLEncoder.encode(Header, "UTF-8"), 
+				     URLEncoder.encode(UserID, "UTF-8"));
+			
+    		
+    		/*URLConnection connection = new URL(url + "?" + query).openConnection();
+    		connection.setRequestProperty("Accept-Charset", "UTF-8");
+    		InputStream response = connection.getInputStream()*/
+    		   
+
+		    URLConnection connection = new URL(url).openConnection();
+    		connection.setDoOutput(true); // Triggers POST.
+    		connection.setRequestProperty("Accept-Charset", "UTF-8");
+    		connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=" + "UTF-8");
+    		//connection.setDoInput(true);
+    		java.io.OutputStream out=connection.getOutputStream();
+    		out.write(query.getBytes("UTF-8"));
+    		
+    		response = connection.getInputStream();
+    		
+    		out.flush();
+    		out.close();
+
+    		/*String mResponse=null; 
+    		
+    		BufferedReader br = new BufferedReader(new InputStreamReader(response));
+    		StringBuilder sb = new StringBuilder();
+    		while((mResponse = br.readLine())!=null)
+    		{
+    			sb.append(mResponse);
+    		}
+    		br.close();
+    		
+    		response.close();
+    		
+    		iresponse = sb.toString();
+    		sb.setLength(0);*/
+    		
+    		/*ByteArrayOutputStream oas = new ByteArrayOutputStream();
+    		copyStream(response,oas); 
+    		
+    		iresponse = oas.toString();
+    		oas.close();
+    		oas = null;*/
+    		
+    		iresponse = IOUtils.toString(response);
+    	
+    		} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+    			//e.printStackTrace();
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+			}
+    		
+
+    		
+    	}
+
+
+		private void copyStream(InputStream response, ByteArrayOutputStream oas) {
+			final int buffer_size = 1024;
+			
+			try{
+				byte[] bytes = new byte[buffer_size];
+				for(;;)
+				{
+					int count=response.read(bytes,0,buffer_size);
+					if(count==-1)
+						break;
+					
+					oas.write(bytes,0,count);
+				}
+			}
+			
+			catch(Exception ex){}
+		}
+
+
+		
+    	 
+    	}
+    
+    
+ 
+ /*// 1. Instantiate an AlertDialog.Builder with its constructor
+    AlertDialog.Builder builder = new AlertDialog.Builder(getCurrentActivity());
+
+    // 2. Chain together various setter methods to set the dialog characteristics
+    builder.setMessage(R.string.dialog_message)
+           .setTitle(R.string.dialog_title);
+
+    // 3. Get the AlertDialog from create()
+    AlertDialog dialog = builder.create();*/
+    
+    
+
+    
+    @SuppressLint("ValidFragment")
+	public class FireMissilesDialogFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(iresponse.trim())
+                   .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                       public void onClick(DialogInterface dialog, int id) {
+                           // FIRE ZE MISSILES!
+                       }
+                   });
+                   /*.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                       public void onClick(DialogInterface dialog, int id) {
+                           // User cancelled the dialog
+                       }
+                   });*/
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
+    }
+    
+    
+  
+    
+
+    
+    
+    
+	class PostDatabaseAdapter extends CursorAdapter {
+
+
+		    PostDatabaseAdapter(Cursor c) {
+			super(HomeActivity.this,c);
+			}
+			@Override
+			public void bindView(View row, Context ctxt,Cursor c) {
+		    PostDatabaseHolder holder=(PostDatabaseHolder)row.getTag();
+			holder.populateFrom(c, helper);
+			}
+			@Override
+			public View newView(Context ctxt, Cursor c,	ViewGroup parent) {
+			LayoutInflater inflater=getLayoutInflater();
+			View row=inflater.inflate(R.layout.row, parent, false);
+			PostDatabaseHolder holder=new PostDatabaseHolder(row);
+			row.setTag(holder);
+			return(row);
+			}
+		
+		}    
+    
+    
+    
+    
+    
+   static class PostDatabaseHolder {
+		private TextView uname=null;
+		private TextView post_body=null;
+		private TextView date_time=null;
+		private ImageView image=null;
+		private ImageView pimage=null;
+		private View row=null;
+		PostDatabaseHolder(View row) {
+		this.row=row;
+		
+		uname=(TextView)row.findViewById(R.id.row_username);
+		post_body=(TextView)row.findViewById(R.id.row_body);
+		date_time=(TextView)row.findViewById(R.id.row_date_time);
+		image=(ImageView)row.findViewById(R.id.row_image);
+		pimage=(ImageView)row.findViewById(R.id.row_postimage);
+		}
+		
+		
+		void populateFrom(Cursor c, PostDatabase helper) {
+		   
+
+				uname.setText(helper.getName(c));
+				post_body.setText(helper.getBody(c));
+				date_time.setText(helper.getDate(c));
+
+			    image.setImageResource(R.drawable.ic_mee);
+
+			   
+			    if(helper.getType(c).compareTo("NO")==0)
+			    {
+			    	pimage.setImageBitmap(null);
+				    pimage.setLayoutParams(new LinearLayout.LayoutParams(
+				    		ViewGroup.LayoutParams.WRAP_CONTENT,
+				    		ViewGroup.LayoutParams.WRAP_CONTENT));
+		        }
+		    
+		        else //if(helper.getType(c).compareTo("Post")==0)
+		        {
+				
+		    	    pimage.setImageBitmap(BitmapFactory.decodeByteArray(helper.getBmp(c), 0, helper.getBmp(c).length));
+				    pimage.setLayoutParams(new LinearLayout.LayoutParams(90,90));		    	
+		        }
+		   
+		   
+		}
+		}   
+    
+	
+	
+	 /**
+     * Checks if the device has Internet connection.
+     * 
+     * @return <code>true</code> if the phone is connected to the Internet.
+     */
+      public static boolean checkNetworkConnection(Context context)
+      {
+          final ConnectivityManager connMgr = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+          final android.net.NetworkInfo wifi =connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+          final android.net.NetworkInfo mobile =connMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+          if(wifi.isAvailable()||mobile.isAvailable())
+              return true;
+          else
+              return false;
+      }    
+
+	
+    public void ClosMe() {
+
+    Intent intent = getIntent();
+    overridePendingTransition(0, 0);
+    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+    finish();
+}	
+	
+	
+
+    
+    
+    private void doSomeLongWork(final int incr) {
+		runOnUiThread(new Runnable() {
+		public void run() {
+		progress+=incr;
+		setProgress(progress);
+		}
+		});
+		SystemClock.sleep(250); // should be something more useful!
+		}
+	
+
+	
+	private Runnable longTask=new Runnable() {
+		public void run() {
+		for (int i=progress;i<10000 && isActive.get(); i+=200) {
+		doSomeLongWork(200);
+		}
+		if (isActive.get()==false) {
+		runOnUiThread(new Runnable() {
+		public void run() {
+		setProgressBarVisibility(false);
+		progress=0;
+		}
+		});
+		}
+		}
+		};
+		
+		
+			
+	
+
+/*		@Override
+		public void onPause() {
+		super.onPause();
+		isActive.set(false);
+		}
+		
+		@Override
+		public void onResume() {
+		super.onResume();
+		isActive.set(true);
+		if (progress>0) {
+		startWork();
+		}
+		}*/
+		
+		private void startWork() {
+			isActive.set(true);
+			setProgressBarVisibility(true);
+			new Thread(longTask).start();
+			}
+		    
+	
+		
+		
+		  /*public List readJsonStream(InputStream in) throws IOException {
+			     JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
+			     try {
+			       return readMessagesArray(reader);
+			     }
+			      finally {
+			       reader.close();
+			     }
+			   }
+
+			   public List readMessagesArray(JsonReader reader) throws IOException {
+			     List messages = new ArrayList();
+
+			     reader.beginArray();
+			     while (reader.hasNext()) {
+			       messages.add(readMessage(reader));
+			     }
+			     reader.endArray();
+			     return messages;
+			   }
+
+			   public Message readMessage(JsonReader reader) throws IOException {
+			     long id = -1;
+			     String text = null;
+			     User user = null;
+			     List geo = null;
+
+			     reader.beginObject();
+			     while (reader.hasNext()) {
+			       String name = reader.nextName();
+			       if (name.equals("id")) {
+			         id = reader.nextLong();
+			       } else if (name.equals("text")) {
+			         text = reader.nextString();
+			       } else if (name.equals("geo") && reader.peek() != JsonToken.NULL) {
+			         geo = readDoublesArray(reader);
+			       } else if (name.equals("user")) {
+			         user = readUser(reader);
+			       } else {
+			         reader.skipValue();
+			       }
+			     }
+			     reader.endObject();
+			     return new Message(id, text, user, geo);
+			   }
+
+			   public List readDoublesArray(JsonReader reader) throws IOException {
+			     List doubles = new ArrayList();
+
+			     reader.beginArray();
+			     while (reader.hasNext()) {
+			       doubles.add(reader.nextDouble());
+			     }
+			     reader.endArray();
+			     return doubles;
+			   }
+
+			   public User readUser(JsonReader reader) throws IOException {
+			     String username = null;
+			     int followersCount = -1;
+
+			     reader.beginObject();
+			     while (reader.hasNext()) {
+			       String name = reader.nextName();
+			       if (name.equals("name")) {
+			         username = reader.nextString();
+			       } else if (name.equals("followers_count")) {
+			         followersCount = reader.nextInt();
+			       } else {
+			         reader.skipValue();
+			       }
+			     }
+			     reader.endObject();
+			     return new User(username, followersCount);
+			   }}*/
+
+    
+    
+}
+

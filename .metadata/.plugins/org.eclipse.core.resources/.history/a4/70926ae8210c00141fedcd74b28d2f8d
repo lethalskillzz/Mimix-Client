@@ -1,0 +1,31 @@
+
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+     android:orientation="vertical"
+     android:gravity="center">
+     
+        
+        	<Button  android:id="@+id/SubmitaddBtn"
+			android:layout_width="300dip" 
+			android:layout_height="150dip" android:background="@drawable/button_selector"
+			android:paddingTop="5dip" android:paddingBottom="5dip"
+			 />
+        
+        
+
+    <GridView 
+    android:id="@+id/commerce_gridView"
+    android:numColumns="3"
+    android:gravity="center"
+    android:columnWidth="120dp"
+    android:stretchMode="columnWidth"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+ 
+
+    </GridView>
+</LinearLayout> 

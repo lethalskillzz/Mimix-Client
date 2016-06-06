@@ -1,0 +1,95 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:background="@drawable/metro"
+android:gravity="center_horizontal">
+
+     
+ <ScrollView    
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#8333" 
+        android:orientation="vertical"
+        android:padding="4dp"
+        >
+ 
+        <LinearLayout
+            style="@style/LoginFormContainer"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+     
+        <LinearLayout
+            style="@style/LoginFormContainer"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+         <ImageView
+           android:layout_width="230dip"
+           android:layout_height="120dip"
+           android:layout_gravity="center"
+           android:layout_marginLeft="-10dip"
+           android:scaleType="fitXY"
+           android:src="@drawable/spoiler"
+           android:adjustViewBounds="true" />
+                        
+
+            
+            <EditText
+                android:id="@+id/user_edttxt"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/custom_edt"
+                android:hint="Username"
+                android:maxLength="15"
+                android:maxLines="1"
+                android:singleLine="true" />
+
+            <EditText
+                android:id="@+id/pwd_edttxt"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/custom_edt"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:maxLength="12"
+                android:maxLines="1"
+                android:singleLine="true" />
+   
+            
+            
+               <Button
+                android:id="@+id/login_button"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/post_btn2"
+                android:paddingBottom="5dp"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:paddingTop="5dp"
+                android:text="Log in"
+                android:textAlignment="center"
+                android:textColor="#ffffff"
+                android:textSize="15sp" />
+                        
+            
+                        
+             </LinearLayout>
+      
+
+               
+            </LinearLayout>
+     </ScrollView>  
+      </LinearLayout>   
+   

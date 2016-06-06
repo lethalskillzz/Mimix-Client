@@ -1,0 +1,98 @@
+           
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:background="#48eeedf3"
+             android:gravity="center">
+            
+            <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp"
+              >
+            
+           <EditText
+               android:id="@+id/post_edttxt"
+               android:layout_width="180dp"
+               android:layout_height="125dp"
+               android:layout_margin="5dp"
+               android:layout_marginTop="5dp"
+               android:background="@drawable/custom_edt"
+               android:hint="What's up?"
+               android:maxLength="140"
+                />
+ 
+     <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        
+         <TextView
+             android:id="@+id/char_count"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:ellipsize="end"
+             android:fontFamily="MV Boli"
+             android:gravity="center_vertical"
+             android:singleLine="true"
+             android:text="0/140"
+             android:textColor="#ffffff"
+              />
+                  
+        <!-- <ImageView
+            android:id="@+id/post_img"
+            android:layout_width="60dp"
+            android:layout_height="80dp"
+            android:clickable="true"
+            android:longClickable="true"
+            android:onClick="get_img"
+            android:src="@drawable/def_postpic" />  -->
+        
+        <ImageButton
+            android:id="@+id/post_img"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/xml_blank_button2"
+            android:cropToPadding="true"
+            android:longClickable="true"
+            android:onClick="get_img"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_camera" />
+ 
+    <ProgressBar
+        android:id="@+id/post_progressBar"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:indeterminate="true"
+        android:minHeight="50dp"
+        android:minWidth="50dp"
+        android:progress="3" 
+        android:indeterminateDrawable="@drawable/costum_progress_bar"
+        android:padding="3dp"
+    />
+        
+          <Button
+                android:id="@+id/Post_button"
+                android:layout_width="60dp"
+                android:layout_height="36dp"
+                android:padding="4dp"
+                android:layout_marginRight="6dp"
+                android:background="@drawable/post_btn"
+                android:text="Post"
+                android:textColor="#ffffff"
+                android:textSize="13sp"
+                 />
+    
+   </LinearLayout>      
+
+    
+    
+
+    
+</LinearLayout>
+</RelativeLayout>

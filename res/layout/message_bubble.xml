@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    
+    <LinearLayout
+        android:id="@+id/mainwrap"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dip"
+        android:layout_marginBottom="7dip"
+    >
+    
+    
+    <LinearLayout 
+        android:id="@+id/wrapper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dip"
+        android:alpha="0.8"
+         >
+         
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:orientation="horizontal" >
+
+        <com.rockerhieu.emojicon.EmojiconTextView
+            android:id="@+id/txt_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="3dip"
+            android:layout_marginRight="3dip"
+            android:textColor="@android:color/primary_text_light"
+            android:textSize="17sp"
+             />
+        
+         </LinearLayout>
+           
+          
+        
+     <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+       >
+        
+               <TextView
+                   android:id="@+id/txt_date"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_gravity="center"
+                   android:layout_marginLeft="2dip"
+                   android:layout_marginRight="0dip"
+                   android:textColor="#808082"
+                   android:textSize="12sp" />
+        
+     <ImageView
+     android:id="@+id/txt_sent"
+     android:layout_width="wrap_content"
+     android:layout_height="fill_parent"
+     android:src="@drawable/ic_sent"
+     android:layout_marginRight="-10dip"
+     android:layout_marginLeft="-15dip"
+    />
+     
+     
+     
+     <ProgressBar
+      android:id="@+id/txt_loading"
+      style="?android:attr/progressBarStyleSmall"
+      android:layout_width="wrap_content"
+      android:layout_height="fill_parent"
+      android:indeterminate="true"
+      android:layout_marginRight="5dip"
+      android:layout_marginLeft="-5dip"
+      android:indeterminateDrawable="@drawable/costum_progress_bar"
+      android:padding="3dp"    
+      />
+     
+     </LinearLayout>
+     </LinearLayout>
+    </LinearLayout>
+    
+
+    
+</LinearLayout>

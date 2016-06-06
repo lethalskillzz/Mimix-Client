@@ -1,0 +1,78 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+android:orientation="horizontal"
+android:padding="4dp"
+android:background="#eeedf3"
+android:descendantFocusability="blocksDescendants"
+>
+
+    
+<com.android.volley.toolbox.NetworkImageView
+android:id="@+id/allcrow_image"
+android:layout_width="45dp"
+android:layout_height="45dp"
+android:layout_marginRight="3dp"
+android:scaleType="fitXY"
+android:src="@drawable/me"
+android:adjustViewBounds="true"
+/>
+    
+
+<LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:orientation="vertical"
+     >
+
+<TextView android:id="@+id/allcrow_username"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:gravity="center_vertical"
+android:textStyle="bold"
+android:singleLine="true"
+android:ellipsize="end"
+android:textSize="19sp"
+android:textColorLink="#2f6699"
+/>
+
+<TextView
+    android:id="@+id/allcrow_detail"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:singleLine="true"
+    android:textColor="#5a5a60"
+    android:textSize="16sp" />
+
+</LinearLayout>
+
+<!--  <ImageButton
+    android:id="@+id/allcrow_followbtn"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:layout_gravity="right"
+    android:onClick="FollowORunfollow"
+    android:scaleX="0.7"
+    android:scaleY="0.7"
+    /> -->
+    
+    
+<TextView
+    android:id="@+id/allcrow_followbtn"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="right"
+    android:background="@drawable/follow_unfollow_btn"
+    android:clickable="true"
+    android:onClick="FollowORunfollow"
+    android:scaleX="0.95"
+    android:scaleY="0.7"
+    android:singleLine="true"
+    android:textColor="#213951"
+    android:textSize="15sp"
+    android:textStyle="bold|italic" />
+    
+
+</LinearLayout>

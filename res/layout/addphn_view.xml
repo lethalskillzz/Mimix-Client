@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    
+    
+<LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="#eeedf3"
+    android:orientation="horizontal"
+    android:gravity="center_horizontal"
+     >
+
+    
+    
+    
+  
+     <TextView
+        android:id="@+id/addphn_loading_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="3dp"
+        android:text="Loading"
+        android:textStyle="italic"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/dark_slate_gray"
+        android:visibility="gone" />
+    
+    
+    
+
+    <ProgressBar
+        android:id="@+id/addphn_loading"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="24dp"
+        android:layout_height="24dp"    
+        android:indeterminate="true"
+        android:indeterminateDrawable="@drawable/costum_progress_bar"
+        android:padding="3dp"
+        android:visibility="gone" 
+         />
+    
+    
+
+    
+
+</LinearLayout>
+        
+    
+    
+
+       
+    <LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/addphnbuttonwrapper"
+    android:layout_marginTop="0dp"
+    android:background="#eeedf3"
+    android:orientation="vertical"
+    android:padding="4dp"
+    android:visibility="gone" >
+ 
+    
+    <Button
+                android:id="@+id/addphn_button"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/xml_blue_button3"
+                android:onClick="add_phn_contacts"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:text="Finish"
+                android:textColor="#ffffff"
+                android:textSize="15sp" />  
+                         
+            </LinearLayout> 
+
+<View style="@style/Divider"/>
+ 
+    
+    
+</LinearLayout>

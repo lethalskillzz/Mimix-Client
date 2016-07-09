@@ -8,3 +8,4 @@ A social network app with plugin features based on the Android SDK (Eclipse).<br
  <img src="/screen grabs/device-2015-05-05-213754.png">
  
 
+ 

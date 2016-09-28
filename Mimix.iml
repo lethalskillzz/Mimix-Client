@@ -4,7 +4,7 @@
     <facet type="android" name="Android">
       <configuration />
     </facet>
-  </component>
+  </component>   
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">

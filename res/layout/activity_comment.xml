@@ -3,8 +3,7 @@
     android:layout_width="280dp"
     android:layout_height="fill_parent"
      
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
        
         
@@ -15,8 +14,7 @@
     android:layout_gravity="center_horizontal"
     android:layout_margin="4dp"
     android:background="#b3ffffff"
-    android:dividerHeight="0.5dp" 
-/>
+    android:dividerHeight="0.5dp" />
 
    <View style="@style/Divider"/>
    
@@ -24,8 +22,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="#48eeedf3"
-    android:orientation="horizontal" 
-   >       
+    android:orientation="horizontal" >       
    
       
            <EditText
@@ -68,8 +65,7 @@
         android:progress="2" 
         android:indeterminateDrawable="@drawable/costum_progress_bar"
         android:padding="3dp"
-        android:visibility="gone" 
-    />
+        android:visibility="gone"  />
         
           <Button
               android:id="@+id/comment_btn"

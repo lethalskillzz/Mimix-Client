@@ -5,8 +5,7 @@
     android:background="#48eeedf3" 
     android:orientation="vertical"
     >
-
-         
+        
         
    <ListView
     android:id="@+id/listview_comments"

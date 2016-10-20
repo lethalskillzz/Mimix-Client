@@ -15,7 +15,7 @@ public class AppController extends Application {
 	private RequestQueue mRequestQueue;
 	private ImageLoader mImageLoader;
 	LruBitmapCache mLruBitmapCache;
-
+            
 	private static AppController mInstance;
 
 	@Override

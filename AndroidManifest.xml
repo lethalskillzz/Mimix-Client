@@ -29,7 +29,7 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
 
     <!-- Define your own permission to protect payment broadcast -->
-    <permission
+    <permission  
         android:name="com.your.domain.PAYMENT_BROADCAST_PERMISSION"
         android:label="Read payment status"
         android:protectionLevel="signature" />
@@ -75,7 +75,8 @@
 
         <!--
     Implement you own BroadcastReceiver to track payment status,
-    should be protected by "signature" permission
+    should be protected by "signature" permission
+
         -->
         <receiver
             android:name=".PaymentStatusReceiver"
